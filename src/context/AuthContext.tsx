@@ -5,7 +5,10 @@ interface AuthContextType extends AuthState {
   isAuthModalOpen: boolean;
   openAuthModal: () => void;
   closeAuthModal: () => void;
-  loginWithGoogle: (customGoogleUser?: { name: string; email: string; avatar?: string }) => Promise<void>;
+  googleClientId: string;
+  setGoogleClientId: (clientId: string) => void;
+  loginWithGoogleCredential: (credentialToken: string) => Promise<void>;
+  loginWithGoogleDemo: (customGoogleUser?: { name: string; email: string; avatar?: string }) => Promise<void>;
   loginWithEmail: (email: string, pass: string) => Promise<{ success: boolean; error?: string }>;
   registerWithEmail: (data: {
     name: string;
@@ -24,6 +27,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_USER_KEY = 'resilia_auth_current_user';
 const LOCAL_STORAGE_USERS_DB = 'resilia_registered_users_db';
+const LOCAL_STORAGE_GOOGLE_CLIENT_ID = 'resilia_google_client_id';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserProfile | null>(() => {
@@ -37,6 +41,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     return null;
   });
+
+  const [googleClientId, setGoogleClientIdState] = useState<string>(() => {
+    return localStorage.getItem(LOCAL_STORAGE_GOOGLE_CLIENT_ID) || 
+      ((import.meta as any).env?.VITE_GOOGLE_CLIENT_ID as string) || '';
+  });
+
+  const setGoogleClientId = (clientId: string) => {
+    const cleaned = clientId.trim();
+    setGoogleClientIdState(cleaned);
+    if (cleaned) {
+      localStorage.setItem(LOCAL_STORAGE_GOOGLE_CLIENT_ID, cleaned);
+    } else {
+      localStorage.removeItem(LOCAL_STORAGE_GOOGLE_CLIENT_ID);
+    }
+  };
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
@@ -52,9 +71,63 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const openAuthModal = () => setIsAuthModalOpen(true);
   const closeAuthModal = () => setIsAuthModalOpen(false);
 
-  // Login via Google OAuth (supports instant verification or custom account)
-  const loginWithGoogle = async (customGoogleUser?: { name: string; email: string; avatar?: string }) => {
-    const fullName = customGoogleUser?.name || 'Praktisi Risiko';
+  // Real Google Sign-In with JWT Credential decoding (from accounts.google.com)
+  const loginWithGoogleCredential = async (credentialToken: string) => {
+    try {
+      // Decode JWT Payload
+      const base64Url = credentialToken.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      const payload = JSON.parse(jsonPayload);
+
+      const fullName = payload.name || payload.given_name || 'Pengguna Google';
+      const email = payload.email;
+      const avatar = payload.picture || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(fullName)}&backgroundColor=1d4ed8`;
+
+      const existingUsers = getRegisteredUsers();
+      let matched = existingUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+      if (!matched) {
+        matched = {
+          id: `usr-g-${payload.sub || Date.now()}`,
+          name: fullName,
+          email: email,
+          avatar: avatar,
+          role: 'Risk Specialist',
+          institution: 'Akun Google Terverifikasi',
+          provider: 'google',
+          joinedAt: new Date().toISOString(),
+          progress: {
+            completedModules: ['iso31000-principles'],
+            quizScores: {},
+            highestScore: 0,
+            certificateEarned: false,
+          },
+        };
+        saveRegisteredUsers([...existingUsers, matched]);
+      } else {
+        // update avatar and name from google
+        const updatedUser: UserProfile = { ...matched, avatar, name: fullName };
+        matched = updatedUser;
+        saveRegisteredUsers(existingUsers.map(u => (u.id === updatedUser.id ? updatedUser : u)));
+      }
+
+      setUser(matched);
+      closeAuthModal();
+    } catch (err) {
+      console.error('Failed to parse Google OAuth credential token', err);
+      throw new Error('Gagal memverifikasi token Google OAuth.');
+    }
+  };
+
+  // Demo Google Sign-In fallback
+  const loginWithGoogleDemo = async (customGoogleUser?: { name: string; email: string; avatar?: string }) => {
+    const fullName = customGoogleUser?.name || 'Praktisi Risiko (Demo)';
     const email = customGoogleUser?.email || 'praktisi.risiko@resiliarisk.web.id';
     const avatar = customGoogleUser?.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(fullName)}&backgroundColor=1d4ed8`;
 
@@ -63,12 +136,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (!matched) {
       matched = {
-        id: `usr-g-${Date.now()}`,
+        id: `usr-demo-${Date.now()}`,
         name: fullName,
         email: email,
         avatar: avatar,
         role: 'Risk Specialist',
-        institution: 'Enterprise Member',
+        institution: 'Simulasi Akun Google',
         provider: 'google',
         joinedAt: new Date().toISOString(),
         progress: {
@@ -92,7 +165,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const found = users.find(u => u.email.toLowerCase() === cleanEmail);
 
     if (!found) {
-      return { success: false, error: 'Email belum terdaftar. Silakan daftar akun baru.' };
+      return { success: false, error: 'Email belum terdaftar. Silakan pilih tab Daftar Akun Baru.' };
     }
 
     // Check password from storage table
@@ -183,7 +256,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
       };
 
-      // update in DB as well
       const allUsers = getRegisteredUsers();
       saveRegisteredUsers(allUsers.map(u => (u.id === prev.id ? updatedUser : u)));
 
@@ -235,7 +307,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAuthModalOpen,
         openAuthModal,
         closeAuthModal,
-        loginWithGoogle,
+        googleClientId,
+        setGoogleClientId,
+        loginWithGoogleCredential,
+        loginWithGoogleDemo,
         loginWithEmail,
         registerWithEmail,
         logout,
