@@ -25,6 +25,8 @@ declare global {
             client_id: string;
             callback: (response: { credential: string }) => void;
             auto_select?: boolean;
+            ux_mode?: string;
+            context?: string;
           }) => void;
           renderButton: (
             parent: HTMLElement,
@@ -95,6 +97,8 @@ export const AuthModal: React.FC = () => {
                 .finally(() => setLoading(false));
             },
             auto_select: false,
+            ux_mode: 'popup',
+            context: 'signin',
           });
 
           googleButtonContainerRef.current.innerHTML = '';
