@@ -5,103 +5,77 @@
   --font-rank: 'Nunito', ui-rounded, "SF Pro Rounded", "Arial Rounded MT Bold", sans-serif;
   --font-mono: 'JetBrains Mono', Consolas, Menlo, monospace;
 
-  /* Cream & White Antislop Palette */
-  --color-canvas: #FAF8F5;
-  --color-canvas-subtle: #F4EFEA;
+  /* Premium Warm Cream & Ivory Antislop Palette */
+  --color-canvas: #FAF7F2;
+  --color-canvas-subtle: #F3EFE8;
   --color-surface: #FFFFFF;
-  --color-surface-hover: #F8F6F2;
-  --color-surface-card: #FFFFFF;
-  --color-subtle: #EAE5DC;
+  --color-surface-hover: #F8F5EE;
+  --color-subtle: #EBE5DB;
   --color-input: #FFFFFF;
   
-  --color-border-subtle: #E6E1D8;
-  --color-border-light: rgba(0, 0, 0, 0.06);
-  --color-border-accent: #2563EB;
+  --color-border-subtle: #E2DDD5;
+  --color-border-light: rgba(15, 23, 42, 0.08);
+  --color-border-accent: #1D4ED8;
 
-  --color-brand-blue: #2563EB;
-  --color-brand-blue-hover: #1D4ED8;
-  --color-brand-indigo: #4F46E5;
+  --color-brand-blue: #1D4ED8;
+  --color-brand-blue-hover: #1E40AF;
+  --color-brand-indigo: #4338CA;
 
-  /* ISO 31000 Risk Severity Tokens (Tactile Light) */
-  --color-risk-low: #10B981;
-  --color-risk-medium: #F59E0B;
-  --color-risk-high: #F97316;
-  --color-risk-extreme: #EF4444;
+  /* ISO 31000 High-Contrast Accessible Colors */
+  --color-risk-low: #047857;
+  --color-risk-medium: #B45309;
+  --color-risk-high: #C2410C;
+  --color-risk-extreme: #B91C1C;
 }
 
 :root {
-  --bg-canvas: #FAF8F5;
+  --bg-canvas: #FAF7F2;
   --bg-surface: #FFFFFF;
-  --bg-surface-hover: #F8F6F2;
-  --border-subtle: #E6E1D8;
+  --bg-surface-hover: #F8F5EE;
+  --border-subtle: #E2DDD5;
   --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
-  --accent-primary: #2563EB;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+  --accent-primary: #1D4ED8;
 }
 
-[data-theme="dark"] {
-  --bg-canvas: #0B0F17;
-  --bg-surface: #131B26;
-  --bg-surface-hover: #1A2433;
-  --border-subtle: #243247;
-  --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --accent-primary: #3B82F6;
-}
-
-body {
-  background-color: var(--bg-canvas);
-  color: var(--text-primary);
+html, body {
+  background-color: #FAF7F2 !important;
+  color: #0F172A !important;
   font-family: var(--font-sans);
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Glass Pill Navbar - Style UI Antislop Standard (Light Cream Edition) */
+/* Glass Pill Navbar - Style UI Antislop Standard (Cream Edition) */
 .glass-pill {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(24px) saturate(160%);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid rgba(22, 34, 53, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.08);
   box-shadow: 
     inset 0 1px 0 0 rgba(255, 255, 255, 1),
-    0 12px 36px -8px rgba(15, 23, 42, 0.07),
-    0 4px 12px -2px rgba(15, 23, 42, 0.03);
-}
-
-[data-theme="dark"] .glass-pill {
-  background: rgba(19, 27, 38, 0.82);
-  backdrop-filter: blur(24px) saturate(140%);
-  -webkit-backdrop-filter: blur(24px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
-    0 20px 48px -12px rgba(0, 0, 0, 0.65);
+    0 10px 30px -6px rgba(15, 23, 42, 0.08),
+    0 2px 6px -1px rgba(15, 23, 42, 0.04);
 }
 
 /* Premium Surface Card */
 .glass-card {
-  background: #FFFFFF;
-  border: 1px solid #E8E4DC;
+  background: #FFFFFF !important;
+  border: 1px solid #E2DDD5;
   box-shadow: 
     0 1px 3px rgba(15, 23, 42, 0.03),
     0 8px 24px -4px rgba(15, 23, 42, 0.05);
-}
-
-[data-theme="dark"] .glass-card {
-  background: rgba(19, 27, 38, 0.75);
-  border: 1px solid rgba(36, 50, 71, 0.8);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  color: #0F172A;
 }
 
 /* Horizontal Rail with edge gradient masking */
 .rail-container {
   overflow-x: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(37, 99, 235, 0.2) transparent;
+  scrollbar-color: rgba(29, 78, 216, 0.25) transparent;
   -webkit-mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent 100%);
   mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent 100%);
 }

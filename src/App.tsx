@@ -13,11 +13,6 @@ import { AuditReportModal } from './components/AuditReportModal';
 import { TemplateSelector } from './components/TemplateSelector';
 
 export const App: React.FC = () => {
-  // Theme state: defaults to luxurious light cream / white
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    return (localStorage.getItem('resilia_theme') as 'dark' | 'light') || 'light';
-  });
-
   // Active navigation tab
   const [activeTab, setActiveTab] = useState<'dashboard' | 'rcsa' | 'kri' | 'academy'>('dashboard');
 
@@ -64,19 +59,12 @@ export const App: React.FC = () => {
     localStorage.setItem('resilia_kris', JSON.stringify(kris));
   }, [kris]);
 
+  // Force pure warm cream light theme permanently & purge stale dark settings
   useEffect(() => {
-    localStorage.setItem('resilia_theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
-  };
+    document.documentElement.classList.remove('dark');
+    document.documentElement.setAttribute('data-theme', 'light');
+    localStorage.setItem('resilia_theme', 'light');
+  }, []);
 
   // Risk Handlers
   const handleOpenNewRisk = () => {
@@ -204,17 +192,22 @@ export const App: React.FC = () => {
         onOpenNewRisk={handleOpenNewRisk}
         onOpenReport={() => setIsReportModalOpen(true)}
         onOpenTemplates={() => setIsTemplateModalOpen(true)}
-        onResetData={handleResetData}
-        theme={theme}
-        toggleTheme={toggleTheme}
         totalRisks={risks.length}
       />
 
       {/* Hero Header Section */}
       <HeroHeader
         onOpenNewRisk={handleOpenNewRisk}
-        onOpenAcademy={() => setActiveTab('academy')}
+        onOpenAcademy={() => {
+          setActiveTab('academy');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
         onOpenTemplates={() => setIsTemplateModalOpen(true)}
+        onOpenReport={() => setIsReportModalOpen(true)}
+        onSwitchTab={(tab) => {
+          setActiveTab(tab);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
         totalRisks={risks.length}
       />
 
