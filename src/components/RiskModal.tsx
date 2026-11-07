@@ -122,10 +122,10 @@ export const RiskModal: React.FC<RiskModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
-      <div className="bg-white dark:bg-[#131b26] w-full max-w-3xl rounded-2xl border border-stone-200 dark:border-slate-700 shadow-2xl overflow-hidden my-auto">
+      <div className="bg-white dark:bg-[#131b26] w-full max-w-3xl rounded-2xl border border-stone-300 dark:border-slate-700 shadow-2xl overflow-hidden my-auto">
         
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-stone-200 dark:border-slate-800 bg-slate-50/70 dark:bg-[#101723]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-stone-300 border-stone-300 bg-slate-50/70 dark:bg-[#101723]">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-600/15 dark:text-blue-400">
               <ShieldAlert className="w-5 h-5" />
@@ -134,21 +134,21 @@ export const RiskModal: React.FC<RiskModalProps> = ({
               <h3 className="text-base font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {editingRisk ? 'Perbarui Lembar RCSA' : 'Identifikasi Risiko Baru (RCSA)'}
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-800 dark:text-slate-700">
                 Format Penilaian Mandiri Kontrol &amp; Risiko Berbasis ISO 31000:2018
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-slate-700 hover:text-slate-700 hover:bg-slate-200/60 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Form */}
-        <form onSubmit={handleSubmit} className="p-6 max-h-[80vh] overflow-y-auto space-y-5 text-xs text-slate-800 dark:text-slate-200">
+        <form onSubmit={handleSubmit} className="p-6 max-h-[80vh] overflow-y-auto space-y-5 text-xs text-slate-800 text-slate-900">
           
           {/* Section 1: Profil & Identifikasi */}
           <div className="space-y-3">
@@ -158,34 +158,34 @@ export const RiskModal: React.FC<RiskModalProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Kode Risiko</label>
+                <label className="block text-slate-700 text-slate-900 font-bold mb-1">Kode Risiko</label>
                 <input
                   type="text"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 font-mono font-bold"
+                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg px-3 py-2 text-slate-900 text-slate-900 font-mono font-bold"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Unit Kerja / Departemen</label>
+                <label className="block text-slate-700 text-slate-900 font-bold mb-1">Unit Kerja / Departemen</label>
                 <input
                   type="text"
                   value={department}
                   onChange={(e) => setDepartment(e.target.value)}
                   placeholder="e.g. IT & Infrastruktur, Kas, SDM"
-                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 font-medium"
+                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg px-3 py-2 text-slate-900 text-slate-900 font-medium"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Taksonomi Kategori</label>
+                <label className="block text-slate-700 text-slate-900 font-bold mb-1">Taksonomi Kategori</label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value as RiskCategory)}
-                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 font-medium cursor-pointer"
+                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg px-3 py-2 text-slate-900 text-slate-900 font-medium cursor-pointer"
                 >
                   <option value="SYSTEM">Sistem &amp; IT / Cyber</option>
                   <option value="PROCESS">Proses &amp; Prosedur</option>
@@ -196,13 +196,13 @@ export const RiskModal: React.FC<RiskModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Nama / Judul Risiko Operasional</label>
+              <label className="block text-slate-700 text-slate-900 font-bold mb-1">Nama / Judul Risiko Operasional</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. Kegagalan Koneksi Gateway Pembayaran saat Jam Sibuk"
-                className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 font-bold text-sm"
+                className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg px-3 py-2 text-slate-900 text-slate-900 font-bold text-sm"
                 required
               />
             </div>
@@ -210,38 +210,38 @@ export const RiskModal: React.FC<RiskModalProps> = ({
             {/* Anatomi Risiko: Cause - Event - Impact */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1 flex items-center justify-between">
+                <label className="block text-slate-700 text-slate-900 font-bold mb-1 flex items-center justify-between">
                   <span>Akar Penyebab (Root Cause)</span>
-                  <span className="text-[10px] text-slate-500 font-normal">Mengapa bisa terjadi?</span>
+                  <span className="text-[10px] text-slate-800 font-normal">Mengapa bisa terjadi?</span>
                 </label>
                 <textarea
                   value={cause}
                   onChange={(e) => setCause(e.target.value)}
                   rows={2}
                   placeholder="e.g. Kapasitas memory server database tidak memadai dan autoscaling timeout..."
-                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg p-2.5 text-slate-900 dark:text-slate-200"
+                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg p-2.5 text-slate-900 text-slate-900"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1 flex items-center justify-between">
+                <label className="block text-slate-700 text-slate-900 font-bold mb-1 flex items-center justify-between">
                   <span>Dampak Finansial &amp; Operasional</span>
-                  <span className="text-[10px] text-slate-500 font-normal">Berapa kerugian/reputasinya?</span>
+                  <span className="text-[10px] text-slate-800 font-normal">Berapa kerugian/reputasinya?</span>
                 </label>
                 <textarea
                   value={impactDescription}
                   onChange={(e) => setImpactDescription(e.target.value)}
                   rows={2}
                   placeholder="e.g. Estimasi kehilangan omzet Rp 200 Juta, komplain pelanggan, sanksi SLA..."
-                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg p-2.5 text-slate-900 dark:text-slate-200"
+                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg p-2.5 text-slate-900 text-slate-900"
                 />
               </div>
             </div>
           </div>
 
           {/* Section 2: Penilaian Risiko Inheren */}
-          <div className="p-4 rounded-xl bg-rose-50/60 dark:bg-slate-900/80 border border-rose-200/80 dark:border-slate-800 space-y-3">
+          <div className="p-4 rounded-xl bg-rose-50/60 dark:bg-slate-900/80 border border-rose-200/80 border-stone-300 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold uppercase tracking-wider text-rose-800 dark:text-rose-400">
                 2. Penilaian Risiko Inheren (Inherent Risk - Tanpa Kontrol)
@@ -257,10 +257,10 @@ export const RiskModal: React.FC<RiskModalProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <span className="font-bold text-slate-800 dark:text-slate-200">
+                  <span className="font-bold text-slate-800 text-slate-900">
                     Kemungkinan (Likelihood): {inherentLikelihood}
                   </span>
-                  <span className="text-[10px] text-slate-500 font-mono">
+                  <span className="text-[10px] text-slate-800 font-mono">
                     {LIKELIHOOD_LABELS[inherentLikelihood].freq}
                   </span>
                 </div>
@@ -273,17 +273,17 @@ export const RiskModal: React.FC<RiskModalProps> = ({
                   onChange={(e) => setInherentLikelihood(Number(e.target.value) as LikelihoodScale)}
                   className="w-full accent-rose-600 cursor-pointer"
                 />
-                <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5 font-medium">
+                <p className="text-[10px] text-slate-600 dark:text-slate-700 mt-0.5 font-medium">
                   {LIKELIHOOD_LABELS[inherentLikelihood].label} — {LIKELIHOOD_LABELS[inherentLikelihood].desc}
                 </p>
               </div>
 
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <span className="font-bold text-slate-800 dark:text-slate-200">
+                  <span className="font-bold text-slate-800 text-slate-900">
                     Dampak (Impact): {inherentImpact}
                   </span>
-                  <span className="text-[10px] text-slate-500 font-mono">
+                  <span className="text-[10px] text-slate-800 font-mono">
                     {IMPACT_LABELS[inherentImpact].lossEst}
                   </span>
                 </div>
@@ -296,7 +296,7 @@ export const RiskModal: React.FC<RiskModalProps> = ({
                   onChange={(e) => setInherentImpact(Number(e.target.value) as ImpactScale)}
                   className="w-full accent-rose-600 cursor-pointer"
                 />
-                <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5 font-medium">
+                <p className="text-[10px] text-slate-600 dark:text-slate-700 mt-0.5 font-medium">
                   {IMPACT_LABELS[inherentImpact].label} — {IMPACT_LABELS[inherentImpact].desc}
                 </p>
               </div>
@@ -310,7 +310,7 @@ export const RiskModal: React.FC<RiskModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">
+              <label className="block text-slate-700 text-slate-900 font-bold mb-1">
                 Deskripsi Kontrol yang Saat Ini Berjalan
               </label>
               <textarea
@@ -318,17 +318,17 @@ export const RiskModal: React.FC<RiskModalProps> = ({
                 onChange={(e) => setExistingControls(e.target.value)}
                 rows={2}
                 placeholder="e.g. SOP validasi berjenjang Maker-Checker, backup harian otomatis, firewall..."
-                className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg p-2.5 text-slate-900 dark:text-slate-200"
+                className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg p-2.5 text-slate-900 text-slate-900"
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Tipe Pengendalian</label>
+                <label className="block text-slate-700 text-slate-900 font-bold mb-1">Tipe Pengendalian</label>
                 <select
                   value={controlType}
                   onChange={(e) => setControlType(e.target.value as ControlType)}
-                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 font-medium cursor-pointer"
+                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg px-3 py-2 text-slate-900 text-slate-900 font-medium cursor-pointer"
                 >
                   <option value="PREVENTIVE">Preventif (Mencegah sebelum kejadian)</option>
                   <option value="DETECTIVE">Detektif (Mendeteksi saat/sesudah kejadian)</option>
@@ -337,13 +337,13 @@ export const RiskModal: React.FC<RiskModalProps> = ({
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">
+                <label className="block text-slate-700 text-slate-900 font-bold mb-1">
                   Tingkat Efektivitas Kontrol
                 </label>
                 <select
                   value={controlEffectiveness}
                   onChange={(e) => handleEffectivenessChange(e.target.value as ControlEffectiveness)}
-                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg px-3 py-2 text-emerald-800 dark:text-emerald-400 font-bold cursor-pointer"
+                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg px-3 py-2 text-emerald-800 dark:text-emerald-400 font-bold cursor-pointer"
                 >
                   <option value="STRONG">Efektif / Kuat (Mengurangi L &amp; I secara drastis)</option>
                   <option value="ADEQUATE">Memadai / Cukup (Mengurangi sebagian besar risiko)</option>
@@ -355,13 +355,13 @@ export const RiskModal: React.FC<RiskModalProps> = ({
           </div>
 
           {/* Section 4: Penilaian Risiko Residual */}
-          <div className="p-4 rounded-xl bg-emerald-50/60 dark:bg-slate-900/80 border border-emerald-200/80 dark:border-slate-800 space-y-3">
+          <div className="p-4 rounded-xl bg-emerald-50/60 dark:bg-slate-900/80 border border-emerald-200/80 border-stone-300 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-400">
                 4. Risiko Residual (Setelah Kontrol Dijalankan)
               </span>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] text-slate-500 font-medium">
+                <span className="text-[11px] text-slate-800 font-medium">
                   {inherentScore} ➔
                 </span>
                 <div 
@@ -376,7 +376,7 @@ export const RiskModal: React.FC<RiskModalProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <span className="font-bold text-slate-800 dark:text-slate-200">
+                  <span className="font-bold text-slate-800 text-slate-900">
                     Residual Likelihood: {residualLikelihood}
                   </span>
                 </div>
@@ -389,14 +389,14 @@ export const RiskModal: React.FC<RiskModalProps> = ({
                   onChange={(e) => setResidualLikelihood(Number(e.target.value) as LikelihoodScale)}
                   className="w-full accent-emerald-600 cursor-pointer"
                 />
-                <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5 font-medium">
+                <p className="text-[10px] text-slate-600 dark:text-slate-700 mt-0.5 font-medium">
                   {LIKELIHOOD_LABELS[residualLikelihood].label}
                 </p>
               </div>
 
               <div>
                 <div className="flex justify-between items-center mb-1">
-                  <span className="font-bold text-slate-800 dark:text-slate-200">
+                  <span className="font-bold text-slate-800 text-slate-900">
                     Residual Impact: {residualImpact}
                   </span>
                 </div>
@@ -409,7 +409,7 @@ export const RiskModal: React.FC<RiskModalProps> = ({
                   onChange={(e) => setResidualImpact(Number(e.target.value) as ImpactScale)}
                   className="w-full accent-emerald-600 cursor-pointer"
                 />
-                <p className="text-[10px] text-slate-600 dark:text-slate-400 mt-0.5 font-medium">
+                <p className="text-[10px] text-slate-600 dark:text-slate-700 mt-0.5 font-medium">
                   {IMPACT_LABELS[residualImpact].label}
                 </p>
               </div>
@@ -424,11 +424,11 @@ export const RiskModal: React.FC<RiskModalProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Strategi 4T</label>
+                <label className="block text-slate-700 text-slate-900 font-bold mb-1">Strategi 4T</label>
                 <select
                   value={actionStrategy}
                   onChange={(e) => setActionStrategy(e.target.value as ActionPlanStrategy)}
-                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-200 font-bold cursor-pointer"
+                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg px-2.5 py-2 text-slate-900 text-slate-900 font-bold cursor-pointer"
                 >
                   <option value="TREAT">TREAT (Mitigasi)</option>
                   <option value="TRANSFER">TRANSFER (Asuransi/Pihak 3)</option>
@@ -438,41 +438,41 @@ export const RiskModal: React.FC<RiskModalProps> = ({
               </div>
 
               <div className="sm:col-span-2">
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Penanggung Jawab (Action Owner)</label>
+                <label className="block text-slate-700 text-slate-900 font-bold mb-1">Penanggung Jawab (Action Owner)</label>
                 <input
                   type="text"
                   value={actionOwner}
                   onChange={(e) => setActionOwner(e.target.value)}
                   placeholder="e.g. VP Operations, Lead SRE, Manager Kas"
-                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg px-3 py-2 text-slate-900 dark:text-slate-200 font-medium"
+                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg px-3 py-2 text-slate-900 text-slate-900 font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Target Tenggat Waktu</label>
+                <label className="block text-slate-700 text-slate-900 font-bold mb-1">Target Tenggat Waktu</label>
                 <input
                   type="date"
                   value={actionDeadline}
                   onChange={(e) => setActionDeadline(e.target.value)}
-                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg px-2.5 py-2 text-slate-900 dark:text-slate-200 font-mono font-medium"
+                  className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg px-2.5 py-2 text-slate-900 text-slate-900 font-mono font-medium"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-slate-700 dark:text-slate-300 font-bold mb-1">Detail Rencana Aksi Mitigasi</label>
+              <label className="block text-slate-700 text-slate-900 font-bold mb-1">Detail Rencana Aksi Mitigasi</label>
               <textarea
                 value={actionPlan}
                 onChange={(e) => setActionPlan(e.target.value)}
                 rows={2}
                 placeholder="Langkah konkret mitigasi, pengadaan alat bantu, pelatihan staf, atau revisi SOP..."
-                className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 dark:border-slate-800 rounded-lg p-2.5 text-slate-900 dark:text-slate-200"
+                className="w-full bg-slate-50/80 dark:bg-[#101723] border border-stone-300 border-stone-300 rounded-lg p-2.5 text-slate-900 text-slate-900"
               />
             </div>
           </div>
 
           {/* Footer Actions */}
-          <div className="pt-4 border-t border-stone-200 dark:border-slate-800 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-stone-300 border-stone-300 flex items-center justify-end gap-3">
             <button
               type="button"
               onClick={onClose}

@@ -1,0 +1,16 @@
+{
+  "name": "Resilia — Risk Academy & ISO 31000 Studio",
+  "short_name": "Resilia",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#1d4ed8",
+  "description": "Platform SaaS Belajar & Praktik Manajemen Risiko Operasional ISO 31000:2018",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ]
+}

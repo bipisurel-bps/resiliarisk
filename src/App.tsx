@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RiskItem, KRIItem, RiskStatus, IndustryTemplate, KRIStatus } from './types/risk';
 import { INITIAL_RISKS, INITIAL_KRIS } from './data/initialData';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
 import { HeroHeader } from './components/HeroHeader';
 import { StatsOverview } from './components/StatsOverview';
@@ -11,10 +12,13 @@ import { IsoAcademy } from './components/IsoAcademy';
 import { RiskModal } from './components/RiskModal';
 import { AuditReportModal } from './components/AuditReportModal';
 import { TemplateSelector } from './components/TemplateSelector';
+import { AuthModal } from './components/AuthModal';
+import { CertificateModal } from './components/CertificateModal';
+import { ShieldCheck, CheckCircle2, Lock, Globe2 } from 'lucide-react';
 
-export const App: React.FC = () => {
-  // Active navigation tab
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'rcsa' | 'kri' | 'academy'>('dashboard');
+const ResiliaAppContent: React.FC = () => {
+  // Active navigation tab — default to 'academy' for risk learning focus!
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'rcsa' | 'kri' | 'academy'>('academy');
 
   // Risks Data with LocalStorage Persistence
   const [risks, setRisks] = useState<RiskItem[]>(() => {
@@ -47,6 +51,7 @@ export const App: React.FC = () => {
   const [editingRisk, setEditingRisk] = useState<RiskItem | null>(null);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
   const [selectedRiskId, setSelectedRiskId] = useState<string | undefined>(undefined);
   const [selectedFilterLevel, setSelectedFilterLevel] = useState<string | null>(null);
 
@@ -168,14 +173,7 @@ export const App: React.FC = () => {
     setRisks(newRisks);
     setKris(newKris);
     setSelectedRiskId(undefined);
-  };
-
-  const handleResetData = () => {
-    if (window.confirm('Reset data kembali ke contoh awal?')) {
-      setRisks(INITIAL_RISKS);
-      setKris(INITIAL_KRIS);
-      setSelectedRiskId(undefined);
-    }
+    setActiveTab('dashboard');
   };
 
   const handleImportJson = (importedRisks: RiskItem[]) => {
@@ -192,6 +190,7 @@ export const App: React.FC = () => {
         onOpenNewRisk={handleOpenNewRisk}
         onOpenReport={() => setIsReportModalOpen(true)}
         onOpenTemplates={() => setIsTemplateModalOpen(true)}
+        onOpenCertificateModal={() => setIsCertificateModalOpen(true)}
         totalRisks={risks.length}
       />
 
@@ -204,6 +203,7 @@ export const App: React.FC = () => {
         }}
         onOpenTemplates={() => setIsTemplateModalOpen(true)}
         onOpenReport={() => setIsReportModalOpen(true)}
+        onOpenCertificateModal={() => setIsCertificateModalOpen(true)}
         onSwitchTab={(tab) => {
           setActiveTab(tab);
           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -223,25 +223,34 @@ export const App: React.FC = () => {
         />
 
         {/* Dynamic Tab Switcher Content */}
+        {activeTab === 'academy' && (
+          <IsoAcademy 
+            onOpenCertificateModal={() => setIsCertificateModalOpen(true)}
+          />
+        )}
+
         {activeTab === 'dashboard' && (
           <div className="space-y-6">
             <HeatmapMatrix
               risks={risks}
               onSelectRisk={(risk) => {
                 setSelectedRiskId(risk.id);
-                // Also scroll down or highlight
+                const el = document.getElementById('rcsa-section');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
               selectedRiskId={selectedRiskId}
             />
 
-            <RcsaWorkspace
-              risks={risks}
-              onEditRisk={handleEditRisk}
-              onDeleteRisk={handleDeleteRisk}
-              onSelectRisk={(risk) => setSelectedRiskId(risk.id)}
-              onUpdateStatus={handleUpdateStatus}
-              selectedRiskId={selectedRiskId}
-            />
+            <div id="rcsa-section">
+              <RcsaWorkspace
+                risks={risks}
+                onEditRisk={handleEditRisk}
+                onDeleteRisk={handleDeleteRisk}
+                onSelectRisk={(risk) => setSelectedRiskId(risk.id)}
+                onUpdateStatus={handleUpdateStatus}
+                selectedRiskId={selectedRiskId}
+              />
+            </div>
           </div>
         )}
 
@@ -262,10 +271,6 @@ export const App: React.FC = () => {
             onUpdateKriValue={handleUpdateKriValue}
             onAddNewKri={handleAddNewKri}
           />
-        )}
-
-        {activeTab === 'academy' && (
-          <IsoAcademy />
         )}
 
       </main>
@@ -293,14 +298,48 @@ export const App: React.FC = () => {
         onSelectTemplate={handleSelectTemplate}
       />
 
-      {/* Persistent Footer */}
-      <footer className="border-t border-stone-200/90 dark:border-slate-800/60 py-8 text-center text-xs text-slate-500 font-medium">
-        <p>
-          Resilia — Enterprise Operational Risk &amp; RCSA Studio | Sesuai Standar ISO 31000:2018 &amp; Basel II
-        </p>
+      <CertificateModal
+        isOpen={isCertificateModalOpen}
+        onClose={() => setIsCertificateModalOpen(false)}
+      />
+
+      <AuthModal />
+
+      {/* Persistent Footer with Security Green Flag & Compliance Notice */}
+      <footer className="border-t-2 border-stone-300 bg-white/90 py-8 px-4 text-center text-xs text-slate-800 font-bold">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-100" />
+            <span className="text-slate-900 font-black">Flag Hijau: Terverifikasi Aman &amp; Publik</span>
+          </div>
+
+          <p className="text-slate-700 font-medium">
+            Resilia — Enterprise Operational Risk &amp; Academy | ISO 31000:2018 &amp; Basel II
+          </p>
+
+          <div className="flex items-center gap-3 text-[11px] text-slate-700">
+            <span className="flex items-center gap-1 font-semibold">
+              <Lock className="w-3.5 h-3.5 text-emerald-700" />
+              <span>TLS 1.3 256-Bit</span>
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1 font-semibold">
+              <Globe2 className="w-3.5 h-3.5 text-blue-700" />
+              <span>Akses Bebas Semua Jaringan</span>
+            </span>
+          </div>
+        </div>
       </footer>
 
     </div>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <ResiliaAppContent />
+    </AuthProvider>
   );
 };
 

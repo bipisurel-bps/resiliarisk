@@ -123,10 +123,10 @@ export const AuditReportModal: React.FC<AuditReportModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
-      <div className="bg-white dark:bg-[#131b26] w-full max-w-4xl rounded-2xl border border-stone-200 dark:border-slate-700 shadow-2xl overflow-hidden my-auto">
+      <div className="bg-white dark:bg-[#131b26] w-full max-w-4xl rounded-2xl border border-stone-300 dark:border-slate-700 shadow-2xl overflow-hidden my-auto">
         
         {/* Modal Controls Header (no-print) */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-stone-200 bg-slate-50 no-print">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-stone-300 bg-slate-50 no-print">
           <div className="flex items-center gap-2">
             <FileText className="w-5 h-5 text-blue-600" />
             <h3 className="text-sm font-bold text-slate-900">
@@ -173,7 +173,7 @@ export const AuditReportModal: React.FC<AuditReportModalProps> = ({
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors ml-2 cursor-pointer"
+              className="p-1.5 rounded-lg text-slate-700 hover:text-slate-700 hover:bg-slate-200 transition-colors ml-2 cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -197,7 +197,7 @@ export const AuditReportModal: React.FC<AuditReportModalProps> = ({
               <h2 className="text-base font-bold text-slate-800">
                 LAPORAN EKSEKUTIF PROFIL RISIKO OPERASIONAL &amp; RCSA
               </h2>
-              <p className="text-[11px] text-slate-500 font-medium">
+              <p className="text-[11px] text-slate-800 font-medium">
                 Dokumen Resmi Komite Manajemen Risiko &amp; Pengendalian Internal
               </p>
             </div>
@@ -212,23 +212,23 @@ export const AuditReportModal: React.FC<AuditReportModalProps> = ({
           {/* Executive Summary Metrics */}
           <div className="grid grid-cols-4 gap-3 p-4 rounded-xl bg-slate-50 border border-slate-200 mb-6">
             <div>
-              <span className="text-[10px] text-slate-500 font-semibold block uppercase">Total Register:</span>
+              <span className="text-[10px] text-slate-800 font-semibold block uppercase">Total Register:</span>
               <span className="text-2xl font-black text-slate-900 font-rank">{risks.length}</span>
             </div>
             <div>
-              <span className="text-[10px] text-slate-500 font-semibold block uppercase">Ekstrem Residual:</span>
+              <span className="text-[10px] text-slate-800 font-semibold block uppercase">Ekstrem Residual:</span>
               <span className="text-2xl font-black text-rose-600 font-rank">
                 {risks.filter(r => r.residualLevel === 'EXTREME').length}
               </span>
             </div>
             <div>
-              <span className="text-[10px] text-slate-500 font-semibold block uppercase">Tinggi Residual:</span>
+              <span className="text-[10px] text-slate-800 font-semibold block uppercase">Tinggi Residual:</span>
               <span className="text-2xl font-black text-orange-600 font-rank">
                 {risks.filter(r => r.residualLevel === 'HIGH').length}
               </span>
             </div>
             <div>
-              <span className="text-[10px] text-slate-500 font-semibold block uppercase">KRI Peringatan:</span>
+              <span className="text-[10px] text-slate-800 font-semibold block uppercase">KRI Peringatan:</span>
               <span className="text-2xl font-black text-amber-600 font-rank">
                 {kris.filter(k => k.status === 'RED').length}
               </span>
@@ -256,7 +256,7 @@ export const AuditReportModal: React.FC<AuditReportModalProps> = ({
                 <tbody className="divide-y divide-slate-200">
                   {highAndExtreme.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="p-5 text-center text-slate-500">
+                      <td colSpan={6} className="p-5 text-center text-slate-800">
                         Tidak ada risiko berlevel Tinggi atau Ekstrem pada posisi residual saat ini.
                       </td>
                     </tr>
@@ -266,7 +266,7 @@ export const AuditReportModal: React.FC<AuditReportModalProps> = ({
                         <td className="p-2.5 font-mono font-bold text-blue-700">{risk.code}</td>
                         <td className="p-2.5 font-semibold text-slate-900">
                           {risk.title}
-                          <div className="text-[10px] text-slate-500 font-normal">{risk.department}</div>
+                          <div className="text-[10px] text-slate-800 font-normal">{risk.department}</div>
                         </td>
                         <td className="p-2.5 text-center font-mono font-bold text-rose-700">
                           {risk.inherentScore} ({risk.inherentLevel})
@@ -277,7 +277,7 @@ export const AuditReportModal: React.FC<AuditReportModalProps> = ({
                         <td className="p-2.5 text-slate-700">{risk.actionPlan}</td>
                         <td className="p-2.5 text-slate-600 font-medium">
                           {risk.actionOwner}
-                          <div className="font-mono text-[10px] text-slate-400">{risk.actionDeadline}</div>
+                          <div className="font-mono text-[10px] text-slate-700">{risk.actionDeadline}</div>
                         </td>
                       </tr>
                     ))

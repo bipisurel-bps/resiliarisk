@@ -30,10 +30,10 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-      <div className="bg-white dark:bg-[#131b26] w-full max-w-xl rounded-2xl border border-stone-200 dark:border-slate-700 p-6 shadow-2xl">
+      <div className="bg-white dark:bg-[#131b26] w-full max-w-xl rounded-2xl border border-stone-300 dark:border-slate-700 p-6 shadow-2xl">
         
         {/* Header */}
-        <div className="flex items-center justify-between mb-5 pb-3 border-b border-stone-200">
+        <div className="flex items-center justify-between mb-5 pb-3 border-b border-stone-300">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-amber-50 text-amber-700 border border-amber-200">
               <Sparkles className="w-4 h-4" />
@@ -42,14 +42,14 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
               <h3 className="text-sm font-bold text-slate-900 dark:text-white tracking-tight">
                 Pilih Template Profil Risiko Industri
               </h3>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+              <p className="text-[11px] text-slate-800 dark:text-slate-700">
                 Mulai instan dengan kumpulan register RCSA dan indikator KRI standar industri riil.
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+            className="p-1 rounded-lg text-slate-700 hover:text-slate-700 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -64,11 +64,11 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                 onSelectTemplate(tpl);
                 onClose();
               }}
-              className="p-4 rounded-xl bg-slate-50/70 hover:bg-blue-50/60 border border-stone-200 hover:border-blue-400 transition-all cursor-pointer group shadow-2xs"
+              className="p-4 rounded-xl bg-slate-50/70 hover:bg-blue-50/60 border border-stone-300 hover:border-blue-400 transition-all cursor-pointer group shadow-2xs"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3.5">
-                  <div className="p-2.5 rounded-xl bg-white border border-stone-200 shadow-2xs shrink-0">
+                  <div className="p-2.5 rounded-xl bg-white border border-stone-300 shadow-2xs shrink-0">
                     {getTemplateIcon(tpl.id)}
                   </div>
                   <div>
@@ -78,7 +78,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                     <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
                       {tpl.description}
                     </p>
-                    <div className="flex items-center gap-3 mt-2 text-[10px] text-slate-500 font-medium">
+                    <div className="flex items-center gap-3 mt-2 text-[10px] text-slate-800 font-medium">
                       <span>{tpl.risks.length} Risiko Terdaftar</span>
                       <span>•</span>
                       <span>{tpl.kris.length} Indikator KRI</span>
@@ -94,7 +94,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
           ))}
         </div>
 
-        <div className="text-[11px] text-slate-500 text-center font-medium">
+        <div className="text-[11px] text-slate-800 text-center font-medium">
           💡 Memilih template akan memuat data profil risiko contoh ke dalam lembar kerja Anda.
         </div>
 
