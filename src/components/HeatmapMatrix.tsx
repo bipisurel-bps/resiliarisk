@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RiskItem, LikelihoodScale, ImpactScale } from '../types/risk';
-import { calculateRiskLevel, getRiskLevelLabel, LIKELIHOOD_LABELS, IMPACT_LABELS } from '../utils/riskCalculations';
-import { ArrowRight, Eye, ShieldCheck, Flame, Info } from 'lucide-react';
+import { calculateRiskLevel, LIKELIHOOD_LABELS, IMPACT_LABELS } from '../utils/riskCalculations';
+import { Eye, ShieldCheck, Flame, Info } from 'lucide-react';
 
 interface HeatmapMatrixProps {
   risks: RiskItem[];
@@ -15,7 +15,6 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
   selectedRiskId,
 }) => {
   const [viewMode, setViewMode] = useState<'residual' | 'inherent' | 'compare'>('residual');
-  const [hoveredCell, setHoveredCell] = useState<{ l: number; i: number } | null>(null);
 
   // Likelihood 5 down to 1 (Y axis)
   const likelihoods: LikelihoodScale[] = [5, 4, 3, 2, 1];
@@ -32,76 +31,76 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
     });
   };
 
-  // Cell Background generator based on ISO 31000 score
+  // Tactile Antislop Pastel Cell Background generator based on ISO 31000 score
   const getCellBgClass = (l: LikelihoodScale, i: ImpactScale) => {
     const level = calculateRiskLevel(l, i);
     switch (level) {
       case 'EXTREME':
-        return 'bg-red-500/20 border-red-500/40 text-red-300 hover:bg-red-500/30';
+        return 'bg-red-50/90 border-red-200 text-red-900 hover:bg-red-100/90 dark:bg-red-500/20 dark:border-red-500/40 dark:text-red-300';
       case 'HIGH':
-        return 'bg-orange-500/20 border-orange-500/40 text-orange-300 hover:bg-orange-500/30';
+        return 'bg-orange-50/90 border-orange-200 text-orange-950 hover:bg-orange-100/90 dark:bg-orange-500/20 dark:border-orange-500/40 dark:text-orange-300';
       case 'MEDIUM':
-        return 'bg-amber-500/20 border-amber-500/40 text-amber-300 hover:bg-amber-500/30';
+        return 'bg-amber-50/90 border-amber-200 text-amber-950 hover:bg-amber-100/90 dark:bg-amber-500/20 dark:border-amber-500/40 dark:text-amber-300';
       case 'LOW':
       default:
-        return 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/30';
+        return 'bg-emerald-50/90 border-emerald-200 text-emerald-950 hover:bg-emerald-100/90 dark:bg-emerald-500/20 dark:border-emerald-500/40 dark:text-emerald-300';
     }
   };
 
   return (
-    <div className="glass-card rounded-2xl p-4 sm:p-6 mb-6">
+    <div className="glass-card rounded-2xl p-4 sm:p-6 mb-8">
       
       {/* Header & Mode Switcher */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
               Matriks Heatmap Risiko 5x5 (ISO 31000)
             </h2>
-            <span className="text-[11px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 font-medium">
+            <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20 font-bold">
               Interaktif
             </span>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Visualisasi sebaran risiko berdasarkan probabilitas (Likelihood) vs dampak finansial &amp; operasional (Impact).
           </p>
         </div>
 
         {/* View Mode Toggle Pill */}
-        <div className="flex items-center bg-[#101723] p-1 rounded-xl border border-slate-800 text-xs">
+        <div className="flex items-center bg-slate-100 dark:bg-[#101723] p-1 rounded-xl border border-slate-200/90 dark:border-slate-800 text-xs">
           <button
             onClick={() => setViewMode('residual')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
               viewMode === 'residual'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white text-emerald-800 shadow-xs border border-slate-200/80 dark:bg-emerald-600 dark:text-white dark:border-transparent'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
             }`}
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-300" />
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-300" />
             <span>Risiko Residual (Saat Ini)</span>
           </button>
 
           <button
             onClick={() => setViewMode('inherent')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
               viewMode === 'inherent'
-                ? 'bg-rose-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white text-rose-800 shadow-xs border border-slate-200/80 dark:bg-rose-600 dark:text-white dark:border-transparent'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
             }`}
           >
-            <Flame className="w-3.5 h-3.5 text-rose-300" />
+            <Flame className="w-3.5 h-3.5 text-rose-600 dark:text-rose-300" />
             <span>Risiko Inheren (Awal)</span>
           </button>
 
           <button
             onClick={() => setViewMode('compare')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
               viewMode === 'compare'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white text-blue-800 shadow-xs border border-slate-200/80 dark:bg-blue-600 dark:text-white dark:border-transparent'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
             }`}
           >
-            <Eye className="w-3.5 h-3.5 text-blue-300" />
+            <Eye className="w-3.5 h-3.5 text-blue-600 dark:text-blue-300" />
             <span>Perpindahan (Shift)</span>
           </button>
         </div>
@@ -109,21 +108,25 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
 
       {/* Main Heatmap Container */}
       <div className="relative overflow-x-auto pb-2">
-        <div className="min-w-[620px]">
+        <div className="min-w-[640px]">
           
           {/* Y-Axis Label + Grid Layout */}
           <div className="flex">
             
             {/* Vertical Y-Axis Label (Likelihood) */}
-            <div className="w-28 shrink-0 flex flex-col justify-between pr-3 text-right">
-              <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-end gap-1">
+            <div className="w-32 shrink-0 flex flex-col justify-between pr-3 text-right">
+              <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center justify-end gap-1">
                 <span>Kemungkinan</span>
-                <span className="text-[10px] text-blue-400 font-mono">(L)</span>
+                <span className="text-[10px] text-blue-600 font-mono">(L)</span>
               </div>
               {likelihoods.map(l => (
                 <div key={l} className="h-16 flex flex-col justify-center text-right pr-2">
-                  <span className="text-xs font-bold text-slate-200">{l} - {LIKELIHOOD_LABELS[l].label.split(' - ')[1]}</span>
-                  <span className="text-[10px] text-slate-500 truncate">{LIKELIHOOD_LABELS[l].freq}</span>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    {l} - {LIKELIHOOD_LABELS[l].label.split(' - ')[1]}
+                  </span>
+                  <span className="text-[10px] text-slate-500 truncate">
+                    {LIKELIHOOD_LABELS[l].freq}
+                  </span>
                 </div>
               ))}
             </div>
@@ -145,17 +148,15 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
                     return (
                       <div
                         key={`cell-${l}-${i}`}
-                        onMouseEnter={() => setHoveredCell({ l, i })}
-                        onMouseLeave={() => setHoveredCell(null)}
-                        className={`h-16 rounded-xl border p-1.5 flex flex-col justify-between transition-all duration-200 relative group cursor-pointer ${getCellBgClass(
+                        className={`h-16 rounded-xl border p-1.5 flex flex-col justify-between transition-all duration-200 relative group cursor-pointer shadow-2xs ${getCellBgClass(
                           l,
                           i
                         )}`}
                       >
                         {/* Top row in cell: Score & Level label */}
                         <div className="flex items-center justify-between text-[11px] font-mono leading-none">
-                          <span className="font-extrabold text-xs opacity-90">{cellScore}</span>
-                          <span className="text-[9px] uppercase font-semibold opacity-75">
+                          <span className="font-black text-xs">{cellScore}</span>
+                          <span className="text-[9px] uppercase font-bold opacity-75">
                             {cellLevel === 'EXTREME' ? 'EKS' : cellLevel === 'HIGH' ? 'HGH' : cellLevel === 'MEDIUM' ? 'MED' : 'LOW'}
                           </span>
                         </div>
@@ -164,7 +165,6 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
                         <div className="flex flex-wrap gap-1 overflow-y-auto max-h-9 items-center">
                           {viewMode === 'compare' ? (
                             <>
-                              {/* Compare Mode: Show both with shift indicator */}
                               {inherentRisksInCell.map(risk => (
                                 <button
                                   key={`inh-${risk.id}`}
@@ -173,7 +173,7 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
                                     onSelectRisk(risk);
                                   }}
                                   title={`[Inheren] ${risk.code}: ${risk.title}`}
-                                  className="text-[9px] font-mono font-bold px-1 py-0.2 rounded bg-rose-950/80 text-rose-300 border border-rose-600/50 hover:scale-105"
+                                  className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-rose-100 text-rose-800 border border-rose-300 hover:scale-105 shadow-2xs cursor-pointer"
                                 >
                                   {risk.code.replace('RSK-OPS-', '#')}I
                                 </button>
@@ -186,7 +186,7 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
                                     onSelectRisk(risk);
                                   }}
                                   title={`[Residual] ${risk.code}: ${risk.title}`}
-                                  className="text-[9px] font-mono font-bold px-1 py-0.2 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/50 hover:scale-105"
+                                  className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 border border-emerald-300 hover:scale-105 shadow-2xs cursor-pointer"
                                 >
                                   {risk.code.replace('RSK-OPS-', '#')}R
                                 </button>
@@ -201,10 +201,10 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
                                   onSelectRisk(risk);
                                 }}
                                 title={`${risk.code}: ${risk.title} (${risk.department})`}
-                                className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded shadow-sm transition-transform hover:scale-110 cursor-pointer ${
+                                className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg shadow-xs transition-all hover:scale-110 cursor-pointer ${
                                   selectedRiskId === risk.id
-                                    ? 'ring-2 ring-white bg-blue-600 text-white'
-                                    : 'bg-black/60 text-white border border-white/20'
+                                    ? 'bg-blue-600 text-white ring-2 ring-blue-600 shadow-sm'
+                                    : 'bg-white text-slate-800 border border-slate-300/90 hover:border-blue-500 hover:text-blue-600'
                                 }`}
                               >
                                 {risk.code.replace('RSK-OPS-', '#')}
@@ -215,7 +215,7 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
 
                         {/* Hover Quick Tooltip indicator */}
                         {activeRisks.length > 0 && (
-                          <div className="text-[9px] text-right font-sans opacity-70">
+                          <div className="text-[9px] text-right font-sans font-semibold opacity-75">
                             {activeRisks.length} risiko
                           </div>
                         )}
@@ -230,14 +230,14 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
 
           {/* X-Axis Labels (Impact) */}
           <div className="flex mt-2">
-            <div className="w-28 shrink-0 text-right pr-3" />
+            <div className="w-32 shrink-0 text-right pr-3" />
             <div className="flex-1 grid grid-cols-5 gap-2 text-center">
               {impacts.map(i => (
                 <div key={i} className="pt-2">
-                  <div className="text-xs font-bold text-slate-200">
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200">
                     {i} - {IMPACT_LABELS[i].label.split(' - ')[1]}
                   </div>
-                  <div className="text-[10px] text-slate-500">
+                  <div className="text-[10px] text-slate-500 font-medium">
                     {IMPACT_LABELS[i].lossEst}
                   </div>
                 </div>
@@ -246,43 +246,43 @@ export const HeatmapMatrix: React.FC<HeatmapMatrixProps> = ({
           </div>
 
           {/* X-Axis Title */}
-          <div className="text-center mt-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-center gap-1">
+          <div className="text-center mt-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center justify-center gap-1">
             <span>Tingkat Dampak Finansial &amp; Operasional</span>
-            <span className="text-[10px] text-blue-400 font-mono">(I)</span>
+            <span className="text-[10px] text-blue-600 font-mono">(I)</span>
           </div>
 
         </div>
       </div>
 
       {/* Heatmap Legend & ISO Matrix Explanation */}
-      <div className="mt-6 pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="mt-6 pt-4 border-t border-stone-200/80 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-4 flex-wrap">
-          <span className="font-semibold text-slate-400 text-[11px]">Kategori ISO 31000:</span>
+          <span className="font-bold text-slate-600 dark:text-slate-400 text-[11px]">Kategori ISO 31000:</span>
           
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded bg-emerald-500/30 border border-emerald-500" />
-            <span className="text-slate-300">Rendah (1 - 4)</span>
+            <span className="w-3 h-3 rounded-md bg-emerald-100 border border-emerald-400" />
+            <span className="text-slate-700 dark:text-slate-300 font-semibold">Rendah (1 - 4)</span>
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded bg-amber-500/30 border border-amber-500" />
-            <span className="text-slate-300">Sedang (5 - 9)</span>
+            <span className="w-3 h-3 rounded-md bg-amber-100 border border-amber-400" />
+            <span className="text-slate-700 dark:text-slate-300 font-semibold">Sedang (5 - 9)</span>
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded bg-orange-500/30 border border-orange-500" />
-            <span className="text-slate-300">Tinggi (10 - 14)</span>
+            <span className="w-3 h-3 rounded-md bg-orange-100 border border-orange-400" />
+            <span className="text-slate-700 dark:text-slate-300 font-semibold">Tinggi (10 - 14)</span>
           </div>
 
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded bg-red-500/30 border border-red-500" />
-            <span className="text-slate-300 font-medium">Ekstrem (15 - 25)</span>
+            <span className="w-3 h-3 rounded-md bg-red-100 border border-red-400" />
+            <span className="text-slate-800 dark:text-slate-300 font-bold">Ekstrem (15 - 25)</span>
           </div>
         </div>
 
-        <div className="text-[11px] text-slate-400 flex items-center gap-1">
-          <Info className="w-3.5 h-3.5 text-blue-400" />
-          <span>Klik pin nomor risiko (<code className="text-blue-300 font-mono">#001</code>) untuk melihat detail mitigasinya.</span>
+        <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 font-medium">
+          <Info className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+          <span>Klik pin risiko (<code className="text-blue-700 dark:text-blue-300 font-mono font-bold">#001</code>) untuk menyorot detail mitigasinya.</span>
         </div>
       </div>
 

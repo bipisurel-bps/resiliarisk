@@ -19,34 +19,34 @@ export function getRiskLevelLabel(level: RiskLevel): { id: string; en: string; c
       return {
         id: 'Ekstrem / Kritis',
         en: 'Extreme / Critical',
-        color: '#ef4444',
-        bg: 'rgba(239, 68, 68, 0.16)',
-        border: 'rgba(239, 68, 68, 0.4)',
+        color: '#dc2626',
+        bg: '#fef2f2',
+        border: '#fecaca',
       };
     case 'HIGH':
       return {
         id: 'Tinggi',
         en: 'High',
-        color: '#f97316',
-        bg: 'rgba(249, 115, 22, 0.16)',
-        border: 'rgba(249, 115, 22, 0.4)',
+        color: '#ea580c',
+        bg: '#fff7ed',
+        border: '#fed7aa',
       };
     case 'MEDIUM':
       return {
         id: 'Moderat / Sedang',
         en: 'Medium / Moderate',
-        color: '#eab308',
-        bg: 'rgba(234, 179, 8, 0.16)',
-        border: 'rgba(234, 179, 8, 0.4)',
+        color: '#d97706',
+        bg: '#fffbeb',
+        border: '#fde68a',
       };
     case 'LOW':
     default:
       return {
         id: 'Rendah',
         en: 'Low',
-        color: '#10b981',
-        bg: 'rgba(16, 185, 129, 0.16)',
-        border: 'rgba(16, 185, 129, 0.4)',
+        color: '#059669',
+        bg: '#ecfdf5',
+        border: '#a7f3d0',
       };
   }
 }
@@ -70,14 +70,14 @@ export const IMPACT_LABELS: Record<ImpactScale, { label: string; desc: string; l
 export function getCategoryBadge(cat: string): { label: string; color: string; bg: string } {
   switch (cat) {
     case 'PEOPLE':
-      return { label: 'Manusia (People & Fraud)', color: '#ec4899', bg: 'rgba(236, 72, 153, 0.15)' };
+      return { label: 'Manusia (People & Fraud)', color: '#be185d', bg: '#fdf2f8' };
     case 'SYSTEM':
-      return { label: 'Sistem & IT / Cyber', color: '#06b6d4', bg: 'rgba(6, 182, 212, 0.15)' };
+      return { label: 'Sistem & IT / Cyber', color: '#0369a1', bg: '#f0f9ff' };
     case 'PROCESS':
-      return { label: 'Proses & Prosedur', color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.15)' };
+      return { label: 'Proses & Prosedur', color: '#1d4ed8', bg: '#eff6ff' };
     case 'EXTERNAL':
     default:
-      return { label: 'Kejadian Eksternal', color: '#a855f7', bg: 'rgba(168, 85, 247, 0.15)' };
+      return { label: 'Kejadian Eksternal', color: '#6d28d9', bg: '#f5f3ff' };
   }
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { RiskItem, KRIItem } from '../types/risk';
-import { ShieldCheck, AlertTriangle, Flame, Activity, ArrowDownRight, Layers } from 'lucide-react';
+import { ShieldCheck, Flame, Activity, ArrowDownRight, Layers } from 'lucide-react';
 
 interface StatsOverviewProps {
   risks: RiskItem[];
@@ -39,110 +39,110 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({
   const greenKris = kris.filter(k => k.status === 'GREEN').length;
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4 mb-8">
       
       {/* Stat 1: Total Profil Risiko Terdaftar */}
       <div 
         onClick={() => onFilterLevel && onFilterLevel(null)}
-        className={`glass-card p-4 rounded-2xl relative overflow-hidden cursor-pointer transition-all hover:scale-[1.02] ${
-          selectedLevel === null ? 'ring-1 ring-blue-500' : ''
+        className={`glass-card p-4 sm:p-5 rounded-2xl relative overflow-hidden cursor-pointer transition-all hover:scale-[1.01] hover:shadow-md ${
+          selectedLevel === null ? 'ring-2 ring-blue-600' : ''
         }`}
       >
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-medium text-slate-400">Total Risiko Terdaftar</span>
-          <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400">
+          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Total Terdaftar</span>
+          <div className="p-2 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
             <Layers className="w-4 h-4" />
           </div>
         </div>
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-white font-rank">
+          <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-rank">
             {total}
           </span>
-          <span className="text-xs text-slate-400">item RCSA</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">item RCSA</span>
         </div>
-        <div className="mt-2 text-[11px] text-slate-400 flex items-center gap-1.5">
-          <span className="inline-block w-2 h-2 rounded-full bg-blue-400" />
-          <span>ISO 31000 5x5 Register</span>
+        <div className="mt-2.5 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
+          <span className="inline-block w-2 h-2 rounded-full bg-blue-500" />
+          <span>Matriks ISO 31000 5x5</span>
         </div>
       </div>
 
       {/* Stat 2: Efektivitas Pengendalian (Risk Reduction) */}
-      <div className="glass-card p-4 rounded-2xl relative overflow-hidden transition-all hover:scale-[1.02]">
+      <div className="glass-card p-4 sm:p-5 rounded-2xl relative overflow-hidden transition-all hover:scale-[1.01] hover:shadow-md">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-medium text-slate-400">Efektivitas Kontrol</span>
-          <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400">
+          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Efektivitas Kontrol</span>
+          <div className="p-2 rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
             <ShieldCheck className="w-4 h-4" />
           </div>
         </div>
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-rank">
+          <span className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 font-rank">
             -{reductionPercentage}%
           </span>
-          <span className="text-xs text-slate-400">penurunan risiko</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">penurunan risiko</span>
         </div>
-        <div className="mt-2 text-[11px] text-slate-400 flex items-center gap-1 text-emerald-400/90">
+        <div className="mt-2.5 text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold flex items-center gap-1">
           <ArrowDownRight className="w-3.5 h-3.5" />
-          <span>Dari {totalInherentScore} skor ke {totalResidualScore} skor</span>
+          <span>Skor {totalInherentScore} ➔ {totalResidualScore}</span>
         </div>
       </div>
 
       {/* Stat 3: Risiko Kritis (Residual vs Inherent) */}
       <div 
         onClick={() => onFilterLevel && onFilterLevel('HIGH_OR_EXTREME')}
-        className={`glass-card p-4 rounded-2xl relative overflow-hidden cursor-pointer transition-all hover:scale-[1.02] ${
-          selectedLevel === 'HIGH_OR_EXTREME' ? 'ring-1 ring-rose-500' : ''
+        className={`glass-card p-4 sm:p-5 rounded-2xl relative overflow-hidden cursor-pointer transition-all hover:scale-[1.01] hover:shadow-md ${
+          selectedLevel === 'HIGH_OR_EXTREME' ? 'ring-2 ring-rose-600' : ''
         }`}
       >
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-medium text-slate-400">Risiko Ekstrem &amp; Tinggi</span>
-          <div className="p-2 rounded-xl bg-rose-500/10 text-rose-400">
+          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Ekstrem &amp; Tinggi</span>
+          <div className="p-2 rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400">
             <Flame className="w-4 h-4" />
           </div>
         </div>
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl sm:text-3xl font-extrabold text-rose-400 font-rank">
+          <span className="text-2xl sm:text-3xl font-black text-rose-600 dark:text-rose-400 font-rank">
             {residualExtreme + residualHigh}
           </span>
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
             (awal: {inherentExtreme + inherentHigh})
           </span>
         </div>
-        <div className="mt-2 text-[11px] text-slate-400 flex items-center gap-1.5">
-          <span className="text-emerald-400 font-semibold">{residualLow} Rendah</span>
+        <div className="mt-2.5 text-[11px] text-slate-600 dark:text-slate-400 flex items-center gap-1.5 font-medium">
+          <span className="text-emerald-600 font-bold">{residualLow} Rendah</span>
           <span>•</span>
-          <span className="text-amber-400 font-semibold">{residualMedium} Sedang</span>
+          <span className="text-amber-600 font-bold">{residualMedium} Sedang</span>
         </div>
       </div>
 
       {/* Stat 4: KRI Status Alert Radar */}
-      <div className="glass-card p-4 rounded-2xl relative overflow-hidden transition-all hover:scale-[1.02]">
+      <div className="glass-card p-4 sm:p-5 rounded-2xl relative overflow-hidden transition-all hover:scale-[1.01] hover:shadow-md">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-medium text-slate-400">Status KRI (Warning)</span>
-          <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400">
+          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Status KRI Alarm</span>
+          <div className="p-2 rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
             <Activity className="w-4 h-4" />
           </div>
         </div>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-            <span className="text-sm font-bold text-slate-200">{greenKris}</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+            <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{greenKris}</span>
           </div>
-          <span className="text-slate-600">/</span>
+          <span className="text-slate-300 dark:text-slate-600">/</span>
           <div className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
-            <span className="text-sm font-bold text-amber-300">{amberKris}</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+            <span className="text-sm font-bold text-amber-600 dark:text-amber-300">{amberKris}</span>
           </div>
-          <span className="text-slate-600">/</span>
+          <span className="text-slate-300 dark:text-slate-600">/</span>
           <div className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-bounce" />
-            <span className="text-sm font-bold text-rose-400">{redKris}</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+            <span className="text-sm font-bold text-rose-600 dark:text-rose-400">{redKris}</span>
           </div>
         </div>
-        <div className="mt-2 text-[11px] text-slate-400">
+        <div className="mt-2.5 text-[11px] font-medium">
           {redKris > 0 ? (
-            <span className="text-rose-400 font-medium">⚠️ {redKris} KRI butuh perhatian segera!</span>
+            <span className="text-rose-600 font-semibold">⚠️ {redKris} KRI butuh perhatian!</span>
           ) : (
-            <span className="text-emerald-400">Semua indikator dalam ambang aman</span>
+            <span className="text-emerald-600">Semua KRI ambang aman</span>
           )}
         </div>
       </div>

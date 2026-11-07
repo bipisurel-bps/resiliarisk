@@ -1,7 +1,7 @@
 import React from 'react';
 import { INDUSTRY_TEMPLATES } from '../data/initialData';
-import { IndustryTemplate, RiskItem, KRIItem } from '../types/risk';
-import { Sparkles, X, Check, Building2, Stethoscope, Truck, ArrowRight } from 'lucide-react';
+import { IndustryTemplate } from '../types/risk';
+import { Sparkles, X, Building2, Stethoscope, Truck, ArrowRight } from 'lucide-react';
 
 interface TemplateSelectorProps {
   isOpen: boolean;
@@ -19,37 +19,37 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
   const getTemplateIcon = (id: string) => {
     switch (id) {
       case 'tpl-hospital':
-        return <Stethoscope className="w-5 h-5 text-emerald-400" />;
+        return <Stethoscope className="w-5 h-5 text-emerald-600" />;
       case 'tpl-logistics':
-        return <Truck className="w-5 h-5 text-amber-400" />;
+        return <Truck className="w-5 h-5 text-amber-600" />;
       case 'tpl-fintech':
       default:
-        return <Building2 className="w-5 h-5 text-blue-400" />;
+        return <Building2 className="w-5 h-5 text-blue-600" />;
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="glass-card w-full max-w-xl rounded-2xl border border-slate-700 p-5 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+      <div className="bg-white dark:bg-[#131b26] w-full max-w-xl rounded-2xl border border-stone-200 dark:border-slate-700 p-6 shadow-2xl">
         
         {/* Header */}
-        <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
-          <div className="flex items-center gap-2">
-            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+        <div className="flex items-center justify-between mb-5 pb-3 border-b border-stone-200">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-amber-50 text-amber-700 border border-amber-200">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white tracking-tight">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white tracking-tight">
                 Pilih Template Profil Risiko Industri
               </h3>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
                 Mulai instan dengan kumpulan register RCSA dan indikator KRI standar industri riil.
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -64,21 +64,21 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                 onSelectTemplate(tpl);
                 onClose();
               }}
-              className="p-3.5 rounded-xl bg-[#101723] border border-slate-800 hover:border-blue-500/50 hover:bg-slate-800/40 transition-all cursor-pointer group"
+              className="p-4 rounded-xl bg-slate-50/70 hover:bg-blue-50/60 border border-stone-200 hover:border-blue-400 transition-all cursor-pointer group shadow-2xs"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="flex items-start gap-3">
-                  <div className="p-2.5 rounded-xl bg-black/40 border border-slate-800 shrink-0">
+                <div className="flex items-start gap-3.5">
+                  <div className="p-2.5 rounded-xl bg-white border border-stone-200 shadow-2xs shrink-0">
                     {getTemplateIcon(tpl.id)}
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-white group-hover:text-blue-400 transition-colors">
+                    <h4 className="text-xs font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
                       {tpl.name}
                     </h4>
-                    <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
+                    <p className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
                       {tpl.description}
                     </p>
-                    <div className="flex items-center gap-3 mt-2 text-[10px] text-slate-500">
+                    <div className="flex items-center gap-3 mt-2 text-[10px] text-slate-500 font-medium">
                       <span>{tpl.risks.length} Risiko Terdaftar</span>
                       <span>•</span>
                       <span>{tpl.kris.length} Indikator KRI</span>
@@ -86,7 +86,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                   </div>
                 </div>
 
-                <div className="p-1.5 rounded-lg bg-blue-600/10 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="p-1.5 rounded-lg bg-blue-100 text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity">
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -94,7 +94,7 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
           ))}
         </div>
 
-        <div className="text-[11px] text-slate-500 text-center">
+        <div className="text-[11px] text-slate-500 text-center font-medium">
           💡 Memilih template akan memuat data profil risiko contoh ke dalam lembar kerja Anda.
         </div>
 

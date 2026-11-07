@@ -13,9 +13,9 @@ import { AuditReportModal } from './components/AuditReportModal';
 import { TemplateSelector } from './components/TemplateSelector';
 
 export const App: React.FC = () => {
-  // Theme state
+  // Theme state: defaults to luxurious light cream / white
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    return (localStorage.getItem('resilia_theme') as 'dark' | 'light') || 'dark';
+    return (localStorage.getItem('resilia_theme') as 'dark' | 'light') || 'light';
   });
 
   // Active navigation tab
@@ -301,7 +301,7 @@ export const App: React.FC = () => {
       />
 
       {/* Persistent Footer */}
-      <footer className="border-t border-slate-800/60 py-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-stone-200/90 dark:border-slate-800/60 py-8 text-center text-xs text-slate-500 font-medium">
         <p>
           Resilia — Enterprise Operational Risk &amp; RCSA Studio | Sesuai Standar ISO 31000:2018 &amp; Basel II
         </p>
