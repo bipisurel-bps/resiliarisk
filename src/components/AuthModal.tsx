@@ -11,10 +11,7 @@ import {
   CheckCircle2, 
   AlertCircle, 
   Eye,
-  EyeOff,
-  Sparkles,
-  Zap,
-  Info
+  EyeOff
 } from 'lucide-react';
 
 declare global {
@@ -54,10 +51,8 @@ export const AuthModal: React.FC = () => {
     closeAuthModal, 
     googleClientId,
     loginWithGoogleCredential,
-    loginWithGoogleDemo, 
     loginWithEmail, 
-    registerWithEmail,
-    loginWithDemoBps
+    registerWithEmail
   } = useAuth();
 
   const [tab, setTab] = useState<'login' | 'register'>('login');
@@ -136,30 +131,6 @@ export const AuthModal: React.FC = () => {
   }, [isAuthModalOpen, googleClientId]);
 
   if (!isAuthModalOpen) return null;
-
-  const handleDemoGoogleClick = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      await loginWithGoogleDemo();
-    } catch {
-      setError('Gagal menghubungkan sesi akun Google.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleBpsDemoClick = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      await loginWithDemoBps();
-    } catch {
-      setError('Gagal menghubungkan sesi akun demo BPS.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -275,7 +246,7 @@ export const AuthModal: React.FC = () => {
             </button>
           </div>
 
-          {/* Section 1: Google OAuth 2.0 (Clean, No Dev Setup Box) */}
+          {/* Section 1: Official Google OAuth 2.0 Button */}
           <div className="p-3.5 sm:p-4 rounded-2xl bg-stone-50 border-2 border-stone-300 space-y-2.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
@@ -297,7 +268,7 @@ export const AuthModal: React.FC = () => {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                   />
                 </svg>
-                <span>Masuk Cepat dengan Google</span>
+                <span>Masuk dengan Akun Google</span>
               </span>
 
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-300">
@@ -307,16 +278,7 @@ export const AuthModal: React.FC = () => {
 
             {/* Official Google Identity Services Button Container */}
             <div className="flex flex-col items-center justify-center py-1">
-              <div ref={googleButtonContainerRef} className="min-h-[40px] flex items-center justify-center w-full" />
-              
-              <button
-                type="button"
-                onClick={handleDemoGoogleClick}
-                disabled={loading}
-                className="mt-2 text-[11px] text-blue-800 hover:text-blue-950 font-bold underline underline-offset-2 cursor-pointer transition-colors"
-              >
-                Alternatif: Klik di sini untuk masuk instan akun Google
-              </button>
+              <div ref={googleButtonContainerRef} className="min-h-[44px] flex items-center justify-center w-full" />
             </div>
           </div>
 
@@ -510,21 +472,6 @@ export const AuthModal: React.FC = () => {
               <ArrowRight className="w-4 h-4 stroke-[2.5]" />
             </button>
           </form>
-
-          {/* Quick Demo BPS Account Button */}
-          {tab === 'login' && (
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={handleBpsDemoClick}
-                disabled={loading}
-                className="w-full py-2.5 px-3 rounded-xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs active:scale-98"
-              >
-                <Zap className="w-4 h-4 text-emerald-700 fill-emerald-600" />
-                <span>Uji Coba 1-Klik: Akun Demo BPS (analis.risiko@bps.go.id)</span>
-              </button>
-            </div>
-          )}
 
           {/* Footer Navigation Links */}
           <div className="pt-3 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-700 font-medium">
