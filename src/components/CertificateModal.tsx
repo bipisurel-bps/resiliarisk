@@ -115,6 +115,21 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ isOpen, onCl
                 <p className="text-slate-600 font-semibold">Diterbitkan pada:</p>
                 <p className="font-bold text-slate-900 mt-0.5">{certDate}</p>
                 <p className="text-[10px] text-slate-500 font-medium">Jakarta, Indonesia</p>
+                <div className="mt-2.5 flex items-center gap-2">
+                  <div className="w-12 h-12 bg-white border border-stone-300 p-0.5 rounded shadow-2xs">
+                    <img 
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://resiliarisk.web.id/verify/${certId}`} 
+                      alt="QR Validasi Sertifikat" 
+                      className="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="text-[9px] text-left text-slate-600 font-mono leading-tight">
+                    <p className="font-bold text-slate-800">Scan QR Validasi</p>
+                    <p>ISO 31000:2018</p>
+                    <p className="text-emerald-700 font-bold">Terverifikasi Sah</p>
+                  </div>
+                </div>
               </div>
 
               {/* Gold Seal Center */}

@@ -66,11 +66,19 @@ export const IsoAcademy: React.FC<IsoAcademyProps> = ({ onOpenCertificateModal }
       setCurrentQuizIdx(prev => prev + 1);
     } else {
       setCompleted(true);
-      const finalScore = quizScore + (currentQuiz.options[selectedOption || 0]?.isCorrect ? 1 : 0);
+      const finalScore = quizScore;
       updateProgress('iso-31000-exam', finalScore);
 
+      try {
+        localStorage.setItem('resilia_pending_quiz_result', JSON.stringify({
+          score: finalScore,
+          passed: finalScore >= 7,
+          timestamp: new Date().toISOString()
+        }));
+      } catch (e) {}
+
       // If passed (score >= 7 out of 10) and user is authenticated
-      if (finalScore >= 7) {
+      if (finalScore >= 7 && isAuthenticated) {
         issueCertificate();
       }
     }
@@ -775,7 +783,9 @@ export const IsoAcademy: React.FC<IsoAcademyProps> = ({ onOpenCertificateModal }
                     className="flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-400 hover:bg-amber-500 text-amber-950 font-black text-xs sm:text-sm cursor-pointer shadow-md active:scale-95"
                   >
                     <Award className="w-4 h-4 text-amber-900" />
-                    <span>Terbitkan &amp; Cetak Sertifikat ISO 31000</span>
+                    <span>
+                      {isAuthenticated ? 'Terbitkan & Cetak Sertifikat ISO 31000' : 'Masuk / Daftar untuk Cetak Sertifikat'}
+                    </span>
                   </button>
                 )}
 

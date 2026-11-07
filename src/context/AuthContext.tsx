@@ -17,6 +17,7 @@ interface AuthContextType extends AuthState {
     role: string;
     institution: string;
   }) => Promise<{ success: boolean; error?: string }>;
+  loginWithDemoBps: () => Promise<void>;
   logout: () => void;
   updateProgress: (moduleId: string, score?: number) => void;
   issueCertificate: () => { certificateId: string; date: string } | null;
@@ -27,8 +28,28 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const LOCAL_STORAGE_USER_KEY = 'resilia_auth_current_user';
 const LOCAL_STORAGE_USERS_DB = 'resilia_registered_users_db';
+const LOCAL_STORAGE_PASSWORDS_DB = 'resilia_passwords_db';
 const LOCAL_STORAGE_GOOGLE_CLIENT_ID = 'resilia_google_client_id';
-const OFFICIAL_GOOGLE_CLIENT_ID = '403568040979-csg7qi9dc7vumpu6beklufj6699g524u.apps.googleusercontent.com';
+export const OFFICIAL_GOOGLE_CLIENT_ID = '403568040979-csg7qi9dc7vumpu6beklufj6699g524u.apps.googleusercontent.com';
+
+export const DEMO_BPS_USER: UserProfile = {
+  id: 'usr-bps-official',
+  name: 'Budi Raharja, S.Si',
+  email: 'analis.risiko@bps.go.id',
+  avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=Budi%20Raharja&backgroundColor=047857',
+  role: 'Risk Officer / Analis Risiko',
+  institution: 'Badan Pusat Statistik (BPS)',
+  provider: 'email',
+  joinedAt: '2026-01-15T08:00:00.000Z',
+  progress: {
+    completedModules: ['iso31000-principles', 'iso31000-framework', 'three-lines-model', 'iso-31000-exam'],
+    quizScores: { 'iso-31000-exam': 9 },
+    highestScore: 9,
+    certificateEarned: true,
+    certificateId: 'RESILIA-ISO31000-202602-BPS01',
+    certificateDate: '10 Februari 2026',
+  },
+};
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserProfile | null>(() => {
@@ -73,10 +94,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const openAuthModal = () => setIsAuthModalOpen(true);
   const closeAuthModal = () => setIsAuthModalOpen(false);
 
+  // Helper to merge pending quiz result if candidate took exam prior to logging in
+  const applyPendingQuizResult = (baseProgress: UserProfile['progress']): UserProfile['progress'] => {
+    const nextProgress = { ...baseProgress };
+    try {
+      const pendingRaw = localStorage.getItem('resilia_pending_quiz_result');
+      if (pendingRaw) {
+        const pending = JSON.parse(pendingRaw);
+        if (typeof pending.score === 'number') {
+          nextProgress.quizScores = {
+            ...nextProgress.quizScores,
+            'iso-31000-exam': Math.max(nextProgress.quizScores?.['iso-31000-exam'] || 0, pending.score),
+          };
+          nextProgress.highestScore = Math.max(nextProgress.highestScore || 0, pending.score);
+          if (pending.score >= 7 && !nextProgress.certificateEarned) {
+            nextProgress.certificateEarned = true;
+            nextProgress.certificateDate = new Date().toLocaleDateString('id-ID', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            });
+            nextProgress.certificateId = `RESILIA-ISO31000-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(Math.floor(10000 + Math.random() * 90000))}`;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('Pending quiz parse warning:', e);
+    }
+    return nextProgress;
+  };
+
   // Real Google Sign-In with JWT Credential decoding (from accounts.google.com)
   const loginWithGoogleCredential = async (credentialToken: string) => {
     try {
-      // Decode JWT Payload
       const base64Url = credentialToken.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const jsonPayload = decodeURIComponent(
@@ -104,17 +154,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           institution: 'Akun Google Terverifikasi',
           provider: 'google',
           joinedAt: new Date().toISOString(),
-          progress: {
+          progress: applyPendingQuizResult({
             completedModules: ['iso31000-principles'],
             quizScores: {},
             highestScore: 0,
             certificateEarned: false,
-          },
+          }),
         };
         saveRegisteredUsers([...existingUsers, matched]);
       } else {
-        // update avatar and name from google
-        const updatedUser: UserProfile = { ...matched, avatar, name: fullName };
+        const updatedUser: UserProfile = { 
+          ...matched, 
+          avatar, 
+          name: fullName,
+          progress: applyPendingQuizResult(matched.progress),
+        };
         matched = updatedUser;
         saveRegisteredUsers(existingUsers.map(u => (u.id === updatedUser.id ? updatedUser : u)));
       }
@@ -129,7 +183,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Demo Google Sign-In fallback
   const loginWithGoogleDemo = async (customGoogleUser?: { name: string; email: string; avatar?: string }) => {
-    const fullName = customGoogleUser?.name || 'Praktisi Risiko (Demo)';
+    const fullName = customGoogleUser?.name || 'Praktisi Risiko (Google)';
     const email = customGoogleUser?.email || 'praktisi.risiko@resiliarisk.web.id';
     const avatar = customGoogleUser?.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(fullName)}&backgroundColor=1d4ed8`;
 
@@ -146,42 +200,57 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         institution: 'Simulasi Akun Google',
         provider: 'google',
         joinedAt: new Date().toISOString(),
-        progress: {
+        progress: applyPendingQuizResult({
           completedModules: ['iso31000-principles'],
           quizScores: {},
           highestScore: 0,
           certificateEarned: false,
-        },
+        }),
       };
       saveRegisteredUsers([...existingUsers, matched]);
+    } else {
+      matched = {
+        ...matched,
+        progress: applyPendingQuizResult(matched.progress),
+      };
     }
 
     setUser(matched);
     closeAuthModal();
   };
 
-  // Login via Email & Password
+  // Login via Email & Password (Supports ANY domain: @bps.go.id, @kemenkeu.go.id, @company.com, etc.)
   const loginWithEmail = async (email: string, pass: string): Promise<{ success: boolean; error?: string }> => {
     const cleanEmail = email.trim().toLowerCase();
     const users = getRegisteredUsers();
     const found = users.find(u => u.email.toLowerCase() === cleanEmail);
 
     if (!found) {
-      return { success: false, error: 'Email belum terdaftar. Silakan pilih tab Daftar Akun Baru.' };
+      return { 
+        success: false, 
+        error: `Email "${cleanEmail}" belum terdaftar. Silakan pilih tab "Daftar Akun Baru" untuk mendaftar.` 
+      };
     }
 
     // Check password from storage table
-    const passTable = JSON.parse(localStorage.getItem('resilia_passwords_db') || '{}');
+    const passTable = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PASSWORDS_DB) || '{}');
     if (passTable[cleanEmail] && passTable[cleanEmail] !== pass) {
-      return { success: false, error: 'Kata sandi salah. Harap periksa kembali.' };
+      return { success: false, error: 'Kata sandi tidak sesuai. Harap periksa kembali huruf besar/kecil.' };
     }
 
-    setUser(found);
+    // Check and apply pending quiz result
+    const updatedUser = {
+      ...found,
+      progress: applyPendingQuizResult(found.progress),
+    };
+
+    saveRegisteredUsers(users.map(u => (u.id === found.id ? updatedUser : u)));
+    setUser(updatedUser);
     closeAuthModal();
     return { success: true };
   };
 
-  // Register via Email
+  // Register via Email (Works for ANY non-Gmail & government domain)
   const registerWithEmail = async (data: {
     name: string;
     email: string;
@@ -193,7 +262,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const users = getRegisteredUsers();
 
     if (users.some(u => u.email.toLowerCase() === cleanEmail)) {
-      return { success: false, error: 'Email sudah terdaftar. Silakan pilih tab Masuk.' };
+      return { success: false, error: 'Email ini sudah terdaftar. Silakan pilih tab "Masuk" untuk melanjutkan.' };
     }
 
     const newUser: UserProfile = {
@@ -205,23 +274,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       institution: data.institution.trim() || 'Organisasi Terdaftar',
       provider: 'email',
       joinedAt: new Date().toISOString(),
-      progress: {
-        completedModules: [],
+      progress: applyPendingQuizResult({
+        completedModules: ['iso31000-principles'],
         quizScores: {},
         highestScore: 0,
         certificateEarned: false,
-      },
+      }),
     };
 
     // Save user & password
     saveRegisteredUsers([...users, newUser]);
-    const passTable = JSON.parse(localStorage.getItem('resilia_passwords_db') || '{}');
+    const passTable = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PASSWORDS_DB) || '{}');
     passTable[cleanEmail] = data.password;
-    localStorage.setItem('resilia_passwords_db', JSON.stringify(passTable));
+    localStorage.setItem(LOCAL_STORAGE_PASSWORDS_DB, JSON.stringify(passTable));
 
     setUser(newUser);
     closeAuthModal();
     return { success: true };
+  };
+
+  // 1-Click BPS Demo Login for instant non-Gmail testing
+  const loginWithDemoBps = async () => {
+    const users = getRegisteredUsers();
+    let bpsUser = users.find(u => u.email.toLowerCase() === DEMO_BPS_USER.email.toLowerCase());
+
+    if (!bpsUser) {
+      bpsUser = DEMO_BPS_USER;
+      saveRegisteredUsers([...users, bpsUser]);
+      const passTable = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PASSWORDS_DB) || '{}');
+      passTable[DEMO_BPS_USER.email.toLowerCase()] = 'resilia123';
+      localStorage.setItem(LOCAL_STORAGE_PASSWORDS_DB, JSON.stringify(passTable));
+    }
+
+    setUser(bpsUser);
+    closeAuthModal();
   };
 
   const logout = () => {
@@ -315,6 +401,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         loginWithGoogleDemo,
         loginWithEmail,
         registerWithEmail,
+        loginWithDemoBps,
         logout,
         updateProgress,
         issueCertificate,
@@ -338,9 +425,21 @@ export const useAuth = () => {
 function getRegisteredUsers(): UserProfile[] {
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_USERS_DB);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) {
+      // Seed default BPS demo user for instant testing
+      const defaultList = [DEMO_BPS_USER];
+      localStorage.setItem(LOCAL_STORAGE_USERS_DB, JSON.stringify(defaultList));
+      const passTable = JSON.parse(localStorage.getItem(LOCAL_STORAGE_PASSWORDS_DB) || '{}');
+      if (!passTable[DEMO_BPS_USER.email.toLowerCase()]) {
+        passTable[DEMO_BPS_USER.email.toLowerCase()] = 'resilia123';
+        localStorage.setItem(LOCAL_STORAGE_PASSWORDS_DB, JSON.stringify(passTable));
+      }
+      return defaultList;
+    }
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
-    return [];
+    return [DEMO_BPS_USER];
   }
 }
 
