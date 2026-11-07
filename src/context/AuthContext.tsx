@@ -28,6 +28,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const LOCAL_STORAGE_USER_KEY = 'resilia_auth_current_user';
 const LOCAL_STORAGE_USERS_DB = 'resilia_registered_users_db';
 const LOCAL_STORAGE_GOOGLE_CLIENT_ID = 'resilia_google_client_id';
+const OFFICIAL_GOOGLE_CLIENT_ID = '403568040979-csg7qi9dc7vumpu6beklufj6699g524u.apps.googleusercontent.com';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserProfile | null>(() => {
@@ -44,7 +45,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const [googleClientId, setGoogleClientIdState] = useState<string>(() => {
     return localStorage.getItem(LOCAL_STORAGE_GOOGLE_CLIENT_ID) || 
-      ((import.meta as any).env?.VITE_GOOGLE_CLIENT_ID as string) || '';
+      ((import.meta as any).env?.VITE_GOOGLE_CLIENT_ID as string) || 
+      OFFICIAL_GOOGLE_CLIENT_ID;
   });
 
   const setGoogleClientId = (clientId: string) => {

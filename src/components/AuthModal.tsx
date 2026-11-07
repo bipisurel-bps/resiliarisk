@@ -79,35 +79,56 @@ export const AuthModal: React.FC = () => {
   useEffect(() => {
     if (!isAuthModalOpen) return;
 
-    if (window.google?.accounts?.id && googleClientId && googleButtonContainerRef.current) {
-      try {
-        window.google.accounts.id.initialize({
-          client_id: googleClientId,
-          callback: (response: { credential: string }) => {
-            setLoading(true);
-            loginWithGoogleCredential(response.credential)
-              .catch((err) => {
-                setError(err.message || 'Gagal autentikasi Google.');
-              })
-              .finally(() => setLoading(false));
-          },
-          auto_select: false,
-        });
+    let retryTimer: any = null;
 
-        googleButtonContainerRef.current.innerHTML = '';
-        window.google.accounts.id.renderButton(googleButtonContainerRef.current, {
-          theme: 'outline',
-          size: 'large',
-          type: 'standard',
-          text: 'continue_with',
-          shape: 'rectangular',
-          logo_alignment: 'left',
-          width: 320,
-        });
-      } catch (err) {
-        console.warn('Google Identity Services render error:', err);
+    const renderGoogleBtn = () => {
+      if (window.google?.accounts?.id && googleClientId && googleButtonContainerRef.current) {
+        try {
+          window.google.accounts.id.initialize({
+            client_id: googleClientId,
+            callback: (response: { credential: string }) => {
+              setLoading(true);
+              loginWithGoogleCredential(response.credential)
+                .catch((err) => {
+                  setError(err.message || 'Gagal autentikasi Google.');
+                })
+                .finally(() => setLoading(false));
+            },
+            auto_select: false,
+          });
+
+          googleButtonContainerRef.current.innerHTML = '';
+          const btnWidth = typeof window !== 'undefined' && window.innerWidth < 380 ? 260 : 320;
+          window.google.accounts.id.renderButton(googleButtonContainerRef.current, {
+            theme: 'outline',
+            size: 'large',
+            type: 'standard',
+            text: 'continue_with',
+            shape: 'rectangular',
+            logo_alignment: 'left',
+            width: btnWidth,
+          });
+          return true;
+        } catch (err) {
+          console.warn('Google Identity Services render error:', err);
+        }
       }
+      return false;
+    };
+
+    if (!renderGoogleBtn()) {
+      let attempts = 0;
+      retryTimer = setInterval(() => {
+        attempts++;
+        if (renderGoogleBtn() || attempts >= 15) {
+          clearInterval(retryTimer);
+        }
+      }, 200);
     }
+
+    return () => {
+      if (retryTimer) clearInterval(retryTimer);
+    };
   }, [isAuthModalOpen, googleClientId]);
 
   if (!isAuthModalOpen) return null;
