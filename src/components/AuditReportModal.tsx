@@ -198,7 +198,7 @@ export const AuditReportModal: React.FC<AuditReportModalProps> = ({
                 LAPORAN EKSEKUTIF PROFIL RISIKO OPERASIONAL &amp; RCSA
               </h2>
               <p className="text-[11px] text-slate-800 font-medium">
-                Dokumen Resmi Komite Manajemen Risiko &amp; Pengendalian Internal
+                Contoh laporan profil risiko untuk latihan dan evaluasi
               </p>
             </div>
 

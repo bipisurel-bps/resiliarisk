@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { X, Printer, Award, ShieldCheck, CheckCircle2, Download } from 'lucide-react';
+import { X, Printer, Award, ShieldCheck } from 'lucide-react';
 
 interface CertificateModalProps {
   isOpen: boolean;
@@ -34,7 +34,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ isOpen, onCl
           <div className="flex items-center gap-2">
             <Award className="w-5 h-5 text-amber-600" />
             <span className="font-extrabold text-sm text-slate-900">
-              Sertifikat Kelulusan Resmi ISO 31000
+              Sertifikat Penyelesaian Pembelajaran
             </span>
           </div>
 
@@ -77,11 +77,11 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ isOpen, onCl
             </div>
 
             <p className="text-[11px] font-bold text-amber-800 tracking-widest uppercase mb-6">
-              CENTER FOR ENTERPRISE OPERATIONAL RISK &amp; ISO 31000 STUDIES
+              PROGRAM PEMBELAJARAN RESILIA
             </p>
 
             <h1 className="text-xl sm:text-3xl font-black text-slate-900 tracking-wide uppercase font-serif mb-2">
-              SERTIFIKAT KOMPETENSI
+              SERTIFIKAT PENYELESAIAN BELAJAR
             </h1>
             <p className="text-xs text-slate-600 italic mb-6">
               Nomor Registrasi: <span className="font-mono font-bold text-slate-800">{certId}</span>
@@ -104,7 +104,7 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ isOpen, onCl
 
             {/* Citation */}
             <p className="max-w-2xl mx-auto text-xs sm:text-sm text-slate-800 leading-relaxed font-medium mb-8">
-              Atas kelulusan dan keberhasilan menguasai kompetensi dasar <strong>Manajemen Risiko Operasional</strong> sesuai standar internasional <strong>ISO 31000:2018</strong>, pemahaman <strong>The IIA's Three Lines Model</strong>, serta metodologi perancangan <strong>Risk &amp; Control Self-Assessment (RCSA)</strong> dan Key Risk Indicators (KRI).
+              Telah menyelesaikan pembelajaran mandiri Resilia mengenai dasar-dasar <strong>manajemen risiko</strong>, termasuk pengantar ISO 31000, analisis risiko, dan pengenalan RCSA.
             </p>
 
             {/* Signatures & Seal Grid */}
@@ -116,18 +116,10 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ isOpen, onCl
                 <p className="font-bold text-slate-900 mt-0.5">{certDate}</p>
                 <p className="text-[10px] text-slate-500 font-medium">Jakarta, Indonesia</p>
                 <div className="mt-2.5 flex items-center gap-2">
-                  <div className="w-12 h-12 bg-white border border-stone-300 p-0.5 rounded shadow-2xs">
-                    <img 
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://resiliarisk.web.id/verify/${certId}`} 
-                      alt="QR Validasi Sertifikat" 
-                      className="w-full h-full object-contain"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="text-[9px] text-left text-slate-600 font-mono leading-tight">
-                    <p className="font-bold text-slate-800">Scan QR Validasi</p>
-                    <p>ISO 31000:2018</p>
-                    <p className="text-emerald-700 font-bold">Terverifikasi Sah</p>
+                  <div className="text-[9px] text-left text-slate-600 leading-tight">
+                    <p className="font-bold text-slate-800">Nomor referensi peserta</p>
+                    <p>{certId}</p>
+                    <p>Bukan sertifikasi profesi</p>
                   </div>
                 </div>
               </div>
@@ -146,12 +138,12 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ isOpen, onCl
               <div className="text-right">
                 <div className="h-10 flex items-center justify-end">
                   <span className="font-serif italic font-bold text-blue-900 text-sm">
-                    Resilia Academic Board
+                    Resilia Risk Academy
                   </span>
                 </div>
                 <div className="border-t border-stone-400 pt-1">
-                  <p className="font-bold text-slate-900">Komite Manajemen Risiko</p>
-                  <p className="text-[10px] text-slate-600 font-semibold">ISO 31000 Global Lead Assessor</p>
+                  <p className="font-bold text-slate-900">Program Pembelajaran</p>
+                  <p className="text-[10px] text-slate-600 font-semibold">Resilia</p>
                 </div>
               </div>
 
@@ -162,9 +154,8 @@ export const CertificateModal: React.FC<CertificateModalProps> = ({ isOpen, onCl
 
         {/* Modal Footer Controls */}
         <div className="no-print px-6 py-4 bg-stone-50 border-t border-stone-200 flex items-center justify-between text-xs">
-          <div className="flex items-center gap-1.5 text-slate-700 font-semibold">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            <span>Sertifikat ini sah dan dapat dilampirkan pada portofolio profesional atau LinkedIn.</span>
+          <div className="max-w-2xl text-slate-700 font-semibold leading-relaxed">
+            Bukti penyelesaian belajar mandiri. Dokumen ini bukan sertifikasi profesi, akreditasi ISO, atau pengakuan dari lembaga eksternal.
           </div>
 
           <button

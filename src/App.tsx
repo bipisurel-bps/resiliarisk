@@ -14,7 +14,6 @@ import { AuditReportModal } from './components/AuditReportModal';
 import { TemplateSelector } from './components/TemplateSelector';
 import { AuthModal } from './components/AuthModal';
 import { CertificateModal } from './components/CertificateModal';
-import { ShieldCheck, CheckCircle2, Lock, Globe2 } from 'lucide-react';
 
 const ResiliaAppContent: React.FC = () => {
   // Active navigation tab — default to 'academy' for risk learning focus!
@@ -70,6 +69,30 @@ const ResiliaAppContent: React.FC = () => {
     document.documentElement.setAttribute('data-theme', 'light');
     localStorage.setItem('resilia_theme', 'light');
   }, []);
+
+  useEffect(() => {
+    const targets = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+    if (!targets.length) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      targets.forEach(target => target.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -4% 0px' });
+    document.documentElement.classList.add('has-motion');
+    targets.forEach(target => observer.observe(target));
+    return () => {
+      observer.disconnect();
+      document.documentElement.classList.remove('has-motion');
+    };
+  }, [activeTab]);
 
   // Risk Handlers
   const handleOpenNewRisk = () => {
@@ -181,9 +204,9 @@ const ResiliaAppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-primary)] transition-colors duration-300">
+    <div id="top" className="app-shell bg-[var(--bg-canvas)] text-[var(--text-primary)]">
       
-      {/* Floating Glass Pill Navbar */}
+      {/* Primary navigation */}
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -194,33 +217,29 @@ const ResiliaAppContent: React.FC = () => {
         totalRisks={risks.length}
       />
 
-      {/* Hero Header Section */}
+      {/* Learning-first landing page */}
       <HeroHeader
-        onOpenNewRisk={handleOpenNewRisk}
         onOpenAcademy={() => {
           setActiveTab('academy');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.setTimeout(() => document.getElementById('academy-section')?.scrollIntoView({ behavior: 'smooth' }), 0);
         }}
-        onOpenTemplates={() => setIsTemplateModalOpen(true)}
-        onOpenReport={() => setIsReportModalOpen(true)}
-        onOpenCertificateModal={() => setIsCertificateModalOpen(true)}
-        onSwitchTab={(tab) => {
-          setActiveTab(tab);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+        onOpenStudio={() => {
+          setActiveTab('dashboard');
+          window.setTimeout(() => document.getElementById('workspace-section')?.scrollIntoView({ behavior: 'smooth' }), 0);
         }}
-        totalRisks={risks.length}
       />
 
       {/* Main Content Workspace */}
-      <main className="mx-auto max-w-7xl px-3 sm:px-6 pb-16">
+        <main data-reveal id={activeTab === 'academy' ? 'academy-section' : 'workspace-section'} className="mx-auto max-w-7xl px-3 sm:px-6 pb-16">
         
-        {/* Executive Stats Bar */}
-        <StatsOverview
-          risks={risks}
-          kris={kris}
-          onFilterLevel={setSelectedFilterLevel}
-          selectedLevel={selectedFilterLevel}
-        />
+        {activeTab !== 'academy' && (
+          <StatsOverview
+            risks={risks}
+            kris={kris}
+            onFilterLevel={setSelectedFilterLevel}
+            selectedLevel={selectedFilterLevel}
+          />
+        )}
 
         {/* Dynamic Tab Switcher Content */}
         {activeTab === 'academy' && (
@@ -305,30 +324,10 @@ const ResiliaAppContent: React.FC = () => {
 
       <AuthModal />
 
-      {/* Persistent Footer with Security Green Flag & Compliance Notice */}
-      <footer className="border-t-2 border-stone-300 bg-white/90 py-8 px-4 text-center text-xs text-slate-800 font-bold">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-100" />
-            <span className="text-slate-900 font-black">Flag Hijau: Terverifikasi Aman &amp; Publik</span>
-          </div>
-
-          <p className="text-slate-700 font-medium">
-            Resilia — Enterprise Operational Risk &amp; Academy | ISO 31000:2018 &amp; Basel II
-          </p>
-
-          <div className="flex items-center gap-3 text-[11px] text-slate-700">
-            <span className="flex items-center gap-1 font-semibold">
-              <Lock className="w-3.5 h-3.5 text-emerald-700" />
-              <span>TLS 1.3 256-Bit</span>
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-1 font-semibold">
-              <Globe2 className="w-3.5 h-3.5 text-blue-700" />
-              <span>Akses Bebas Semua Jaringan</span>
-            </span>
-          </div>
-        </div>
+      <footer className="site-footer">
+        <a href="#top" className="site-footer__brand">Resilia</a>
+        <p>Belajar manajemen risiko untuk keputusan yang lebih baik.</p>
+        <a href="mailto:bipi.surel@gmail.com?subject=Diskusi%20Manajemen%20Risiko">Hubungi pengelola <span aria-hidden="true">↗</span></a>
       </footer>
 
     </div>

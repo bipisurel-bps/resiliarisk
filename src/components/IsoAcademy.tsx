@@ -107,7 +107,7 @@ export const IsoAcademy: React.FC<IsoAcademyProps> = ({ onOpenCertificateModal }
   const isPassed = completed && quizScore >= 7;
 
   return (
-    <div className="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-7 mb-8 border border-stone-300 shadow-md">
+    <div className="academy-shell glass-card p-4 sm:p-7 mb-8">
       
       {/* Academy Header Bar */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-6 border-b border-stone-200">
@@ -126,7 +126,7 @@ export const IsoAcademy: React.FC<IsoAcademyProps> = ({ onOpenCertificateModal }
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-slate-700 font-semibold mt-1">
-                Pusat penguasaan konsep fundamental manajemen risiko operasional, simulasi keputusan riil, dan sertifikasi kompetensi.
+                Materi mandiri, studi kasus, dan latihan keputusan untuk memahami dasar manajemen risiko.
               </p>
             </div>
           </div>
@@ -139,7 +139,7 @@ export const IsoAcademy: React.FC<IsoAcademyProps> = ({ onOpenCertificateModal }
               {user ? user.name : 'Peserta Belajar'}
             </p>
             <p className="text-[11px] text-slate-700 font-semibold">
-              {user?.progress.certificateEarned ? '✅ Bersertifikat ISO 31000' : 'Target: Sertifikat Kompetensi'}
+              {user?.progress.certificateEarned ? 'Pembelajaran selesai' : 'Target: selesaikan jalur belajar'}
             </p>
           </div>
 
@@ -772,7 +772,7 @@ export const IsoAcademy: React.FC<IsoAcademyProps> = ({ onOpenCertificateModal }
 
               <p className="max-w-md mx-auto text-xs sm:text-sm text-slate-800 font-medium leading-relaxed">
                 {isPassed
-                  ? 'Kompetensi Anda dalam memahami standar ISO 31000:2018, The Three Lines Model, dan formulasi RCSA telah terverifikasi.'
+                  ? 'Anda telah menyelesaikan evaluasi pembelajaran Resilia. Sertifikat yang tersedia mencatat penyelesaian kursus, bukan sertifikasi profesi.'
                   : 'Batas kelulusan minimum adalah 70% (7 Benar). Pelajari kembali materi modul dan silakan ulangi evaluasi.'}
               </p>
 
@@ -784,7 +784,7 @@ export const IsoAcademy: React.FC<IsoAcademyProps> = ({ onOpenCertificateModal }
                   >
                     <Award className="w-4 h-4 text-amber-900" />
                     <span>
-                      {isAuthenticated ? 'Terbitkan & Cetak Sertifikat ISO 31000' : 'Masuk / Daftar untuk Cetak Sertifikat'}
+                      {isAuthenticated ? 'Lihat bukti penyelesaian belajar' : 'Masuk / Daftar untuk melihat bukti belajar'}
                     </span>
                   </button>
                 )}
@@ -811,10 +811,10 @@ export const IsoAcademy: React.FC<IsoAcademyProps> = ({ onOpenCertificateModal }
 
           <div>
             <h3 className="text-xl sm:text-2xl font-black text-slate-900 font-serif">
-              Sertifikat Kompetensi Manajemen Risiko ISO 31000
+              Sertifikat Penyelesaian Pembelajaran Manajemen Risiko
             </h3>
             <p className="text-xs sm:text-sm text-slate-700 font-semibold mt-1">
-              Diterbitkan secara sah oleh Resilia Risk Academy untuk praktisi yang telah menyelesaikan kurikulum dan evaluasi.
+              Bukti bahwa peserta telah menyelesaikan modul dan evaluasi pembelajaran Resilia.
             </p>
           </div>
 
@@ -842,7 +842,7 @@ export const IsoAcademy: React.FC<IsoAcademyProps> = ({ onOpenCertificateModal }
               <div className="pt-3 border-t border-stone-200 flex items-center justify-between">
                 <div className="flex items-center gap-1.5 text-emerald-800 font-bold text-xs">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Status: Terverifikasi Sah</span>
+                  <span>Status: Pembelajaran selesai</span>
                 </div>
 
                 <button
@@ -857,7 +857,7 @@ export const IsoAcademy: React.FC<IsoAcademyProps> = ({ onOpenCertificateModal }
           ) : (
             <div className="max-w-md mx-auto p-5 rounded-2xl bg-amber-50 border border-amber-300 text-xs text-amber-950 space-y-3">
               <p className="font-bold leading-relaxed">
-                Anda belum menerbitkan sertifikat. Selesaikan modul belajar dan raih skor minimal <strong>70% (7 Benar)</strong> pada Ujian Evaluasi Kompetensi untuk mendapatkan sertifikat digital terverifikasi.
+                Selesaikan modul belajar dan raih skor minimal <strong>70% (7 benar)</strong> untuk mendapatkan bukti penyelesaian belajar. Dokumen ini bukan sertifikasi profesi atau akreditasi ISO.
               </p>
               <button
                 onClick={() => setActiveTab('quiz')}

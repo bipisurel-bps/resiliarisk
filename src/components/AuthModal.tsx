@@ -344,7 +344,7 @@ export const AuthModal: React.FC = () => {
                     />
                   </div>
                   <span className="text-[10px] text-slate-600 font-semibold mt-0.5 block">
-                    Nama ini akan tercetak secara resmi pada Sertifikat Kelulusan ISO 31000 Anda.
+                    Nama ini akan tercantum pada bukti penyelesaian belajar Resilia.
                   </span>
                 </div>
 
