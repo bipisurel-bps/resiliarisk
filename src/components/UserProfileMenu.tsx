@@ -67,7 +67,8 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ onOpenCertific
     return (
       <button
         onClick={openAuthModal}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-black text-white bg-blue-700 hover:bg-blue-800 shadow-sm shadow-blue-700/25 transition-all cursor-pointer active:scale-95 group"
+        aria-label="Masuk atau daftar"
+        className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-black text-white bg-blue-700 hover:bg-blue-800 transition-colors cursor-pointer active:scale-95 group"
       >
         <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
           <path
@@ -99,7 +100,7 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ onOpenCertific
       <div className="relative" ref={menuRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-white border border-stone-300 hover:border-blue-400 text-slate-900 transition-all cursor-pointer shadow-2xs"
+          className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-white border border-stone-300 hover:border-blue-400 text-slate-900 transition-colors cursor-pointer"
         >
           <img
             src={user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}`}
@@ -119,9 +120,9 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ onOpenCertific
 
         {/* Dropdown Menu */}
         {isOpen && (
-          <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-stone-300 p-2 z-50 text-xs animate-in fade-in duration-100">
+          <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl border border-stone-300 p-2 z-50 text-xs animate-in fade-in duration-100">
             {/* User Profile Card */}
-            <div className="p-3 border-b border-stone-200 bg-stone-50 rounded-xl mb-1 space-y-1">
+            <div className="p-3 bg-stone-50 rounded-xl mb-1 space-y-1">
               <div className="flex items-center justify-between">
                 <p className="font-black text-slate-900 text-sm truncate">{user.name}</p>
                 {isGovDomain && (
@@ -167,7 +168,7 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ onOpenCertific
                   <Shield className="w-4 h-4 text-blue-700" />
                   <span>Progres Belajar MR</span>
                 </div>
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-900 font-mono font-bold">
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-900 font-bold">
                   {user.progress.completedModules.length} Modul
                 </span>
               </button>
@@ -218,12 +219,12 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ onOpenCertific
 
       {/* Edit Profile Modal */}
       {isEditModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60">
           <div 
-            className="bg-white max-w-md w-full rounded-2xl sm:rounded-3xl border-2 border-stone-300 shadow-2xl overflow-hidden animate-in fade-in duration-150"
+            className="bg-white max-w-md w-full rounded-2xl sm:rounded-3xl border-2 border-stone-300 overflow-hidden animate-in fade-in duration-150"
             onClick={e => e.stopPropagation()}
           >
-            <div className="px-5 py-4 border-b border-stone-200 bg-stone-50 flex items-center justify-between">
+            <div className="px-5 py-4 bg-stone-50 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Edit3 className="w-4 h-4 text-blue-700" />
                 <h3 className="font-black text-slate-900 text-sm">
@@ -255,7 +256,7 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ onOpenCertific
                   />
                 </div>
                 <span className="text-[10px] text-slate-600 font-semibold mt-0.5 block">
-                  Nama ini akan langsung diperbarui pada Sertifikat ISO 31000 Anda.
+                  Nama ini akan langsung diperbarui pada bukti penyelesaian belajar Anda.
                 </span>
               </div>
 
@@ -305,7 +306,7 @@ export const UserProfileMenu: React.FC<UserProfileMenuProps> = ({ onOpenCertific
                 </button>
                 <button
                   type="submit"
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-black cursor-pointer shadow-sm active:scale-95"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-black cursor-pointer active:scale-95"
                 >
                   <Save className="w-3.5 h-3.5" />
                   <span>Simpan Perubahan</span>

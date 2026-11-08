@@ -65,6 +65,7 @@ html { scroll-behavior: smooth; }
 .site-brand strong { display: block; font-size: 19px; line-height: 1.1; font-weight: 800; letter-spacing: -.04em; }
 .site-brand small { display: block; margin-top: 3px; color: #53615d; font-size: 11px; }
 .site-nav__links, .site-nav__actions { display: flex; align-items: center; gap: 28px; }
+.site-nav__short { display: none; }
 .site-nav__links > button, .site-nav__more > summary { display: flex; align-items: center; gap: 7px; border: 0; padding: 12px 0; background: transparent; color: #394743; font-size: 13px; font-weight: 600; cursor: pointer; list-style: none; }
 .site-nav__more > summary::-webkit-details-marker { display: none; }
 .site-nav__links > button:hover, .site-nav__more > summary:hover, .site-nav__links > button.is-active { color: #21594f; }
@@ -153,9 +154,16 @@ html { scroll-behavior: smooth; }
   .site-brand { gap: 8px; }
   .site-brand strong { font-size: 17px; }
   .site-nav__links { gap: 11px; }
+  .site-nav__short { display: inline; }
+  .site-nav__long { display: none; }
   .site-nav__links > button, .site-nav__more > summary { font-size: 11px; }
   .site-nav__more > summary svg { display: none; }
   .site-nav__actions { gap: 4px; }
+  .site-nav__actions > button > span { display: none; }
+  .site-nav__actions > button { width: 34px; height: 34px; justify-content: center; padding: 0; }
+  .site-brand__mark { width: 30px; height: 30px; }
+  .site-brand { gap: 6px; }
+  .site-brand strong { font-size: 15px; }
   .learning-hero { width: calc(100% - 36px); padding-top: 52px; }
   .learning-hero h1 { font-size: clamp(42px, 12vw, 56px); }
   .learning-hero__actions { align-items: flex-start; flex-direction: column; gap: 17px; }

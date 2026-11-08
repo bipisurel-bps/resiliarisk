@@ -35,9 +35,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
         <div className="site-nav__links">
           <button className={activeTab === 'academy' ? 'is-active' : ''} onClick={() => { setActiveTab('academy'); window.setTimeout(() => document.getElementById('academy-section')?.scrollIntoView({ behavior: 'smooth' }), 0); }}>Belajar</button>
-          <button className={activeTab === 'dashboard' ? 'is-active' : ''} onClick={() => showWorkspace('dashboard')}>Studio risiko</button>
+          <button className={activeTab === 'dashboard' ? 'is-active' : ''} onClick={() => showWorkspace('dashboard')}><span className="site-nav__long">Studio risiko</span><span className="site-nav__short">Studio</span></button>
           <details className="site-nav__more">
-            <summary>Perangkat <ArrowDown aria-hidden="true" size={14} /></summary>
+            <summary><span className="site-nav__long">Perangkat</span><span className="site-nav__short">Alat</span><ArrowDown aria-hidden="true" size={14} /></summary>
             <div className="site-nav__menu">
               <button onClick={(event) => { event.currentTarget.closest('details')?.removeAttribute('open'); showWorkspace('rcsa'); }}>RCSA <span>{totalRisks} risiko</span></button>
               <button onClick={(event) => { event.currentTarget.closest('details')?.removeAttribute('open'); showWorkspace('kri'); }}>Indikator risiko (KRI)</button>
